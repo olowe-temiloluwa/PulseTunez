@@ -8,7 +8,7 @@
     
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+        <h2 class="text-4xl md:text-5xl font-black mb-6 text-blue-600">
           Featured Products
         </h2>
         <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Handpicked premium audio equipment for the ultimate sound experience</p>
@@ -89,7 +89,7 @@
       <div class="text-center mt-12">
         <NuxtLink 
           to="/category/audio-gadgets"
-          class="inline-flex items-center px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-xl"
+          class="inline-flex items-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-800 transform hover:scale-105 transition-all duration-300 shadow-xl"
         >
           View All Products
           <Icon name="heroicons:arrow-right" class="w-5 h-5 ml-2" />

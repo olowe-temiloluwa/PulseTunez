@@ -101,8 +101,8 @@ export const useProductStore = defineStore('products', {
       {
         id: 'audio-gadgets',
         name: 'Audio Gadgets',
-        description: 'Headphones, speakers, and personal audio equipment',
-        icon: 'heroicons:headphones'
+        description: 'Headphones, speakers, audio equipment',
+        icon: 'heroicons:microphone'
       },
       {
         id: 'musical-gadgets',

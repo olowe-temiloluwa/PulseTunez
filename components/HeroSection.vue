@@ -3,7 +3,7 @@
     <!-- Fixed Musical Gadget Background -->
     <div class="fixed inset-0 z-0">
       <!-- Musical Equipment Showcase Background -->
-      <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#1a233a] to-[#0b1120]">
         <!-- Musical Equipment Grid Pattern -->
         <div class="absolute inset-0 opacity-10" style="background: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.1) 2px, transparent 2px); background-size: 60px 60px;"></div>
         
@@ -70,7 +70,7 @@
             <Icon name="heroicons:microphone" class="w-12 h-12 text-white animate-pulse" />
           </div>
           <div class="mt-4">
-            <h1 class="text-6xl md:text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 animate-gradient-shift">
+            <h1 class="text-6xl md:text-7xl font-black text-purple-400 ">
               PulseTunez
             </h1>
             <p class="text-xl md:text-2xl text-white/90 font-light tracking-wide">Your Audio Universe</p>
@@ -78,8 +78,8 @@
         </div>
         
         <!-- Enhanced Hero Content -->
-        <div class="animate-fade-in-up">
-          <h2 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+        <div>
+          <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">
             Discover Premium
             <span class="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
               Audio Equipment
@@ -94,7 +94,7 @@
           <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <NuxtLink 
               to="/category/audio-gadgets" 
-              class="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl"
+              class="group inline-flex items-center px-8 py-4 bg-blue-600  text-white font-semibold rounded-xl hover:bg-blue-900 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl"
             >
               <Icon name="heroicons:shopping-bag" class="w-5 h-5 mr-2 group-hover:animate-bounce" />
               Shop Now
@@ -130,7 +130,7 @@
         <!-- Enhanced Scroll Indicator -->
         <div 
           v-if="showScrollIndicator"
-          class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+          class="absolute bottom-2 left-1 right-1 transform -translate-x-1/2 animate-bounce cursor-pointer"
           @click="scrollToNextSection"
         >
           <div class="flex flex-col items-center text-white/80 hover:text-white transition-colors">

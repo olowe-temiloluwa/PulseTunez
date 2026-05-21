@@ -222,6 +222,10 @@
   animation-delay: 4s;
 }
 
+.animation-delay-5000 {
+  animation-delay: 5s;
+}
+
 /* Scroll-triggered animations */
 .scroll-animate {
   opacity: 0;
@@ -357,4 +361,18 @@ html {
   100% {
     left: 100%;
   }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
 }
