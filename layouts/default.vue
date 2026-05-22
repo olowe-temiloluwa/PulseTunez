@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-40">
+    <nav class="bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-900/50 border-b border-transparent dark:border-gray-700 fixed top-0 left-0 right-0 z-40 transition-colors duration-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <!-- Logo -->
@@ -83,11 +83,11 @@
       </div>
 
       <!-- Mobile Menu -->
-      <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t">
+      <div v-if="mobileMenuOpen" class="md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
         <div class="px-4 py-2 space-y-2">
           <NuxtLink 
             to="/" 
-            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             :class="{ 'text-blue-600 font-bold': $route.path === '/' }"
             @click="mobileMenuOpen = false"
           >
@@ -97,7 +97,7 @@
             v-for="category in productStore.categories" 
             :key="category.id"
             :to="`/category/${category.id}`"
-            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             :class="{ 'text-blue-600 font-bold': $route.path.startsWith(`/category/${category.id}`) }"
             @click="mobileMenuOpen = false"
           >
@@ -105,7 +105,7 @@
           </NuxtLink>
           <NuxtLink 
             to="/about" 
-            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             :class="{ 'text-blue-600 font-bold': $route.path === '/about' }"
             @click="mobileMenuOpen = false"
           >
@@ -113,7 +113,7 @@
           </NuxtLink>
           <NuxtLink 
             to="/contact" 
-            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             :class="{ 'text-blue-600 font-bold': $route.path === '/contact' }"
             @click="mobileMenuOpen = false"
           >
@@ -121,7 +121,7 @@
           </NuxtLink>
           <NuxtLink 
             to="/settings" 
-            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             :class="{ 'text-blue-600 font-bold': $route.path === '/settings' }"
             @click="mobileMenuOpen = false"
           >
@@ -147,14 +147,14 @@
     >
       <div 
         v-if="cartStore.isOpen"
-        class="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 flex flex-col"
+        class="fixed right-0 top-0 h-full w-96 bg-white dark:bg-gray-800 shadow-2xl z-50 flex flex-col transition-colors duration-300"
       >
         <!-- Cart Header -->
-        <div class="flex items-center justify-between p-4 border-b">
-          <h2 class="text-lg font-semibold">Shopping Cart</h2>
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Shopping Cart</h2>
           <button 
             @click="cartStore.closeCart"
-            class="p-2 hover:bg-gray-100 rounded-lg"
+            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300"
           >
             <Icon name="heroicons:x-mark" class="w-5 h-5" />
           </button>
@@ -162,14 +162,14 @@
 
         <!-- Cart Items -->
         <div class="flex-1 overflow-y-auto p-4">
-          <div v-if="cartStore.items.length === 0" class="text-center py-8 text-gray-500">
+          <div v-if="cartStore.items.length === 0" class="text-center py-8 text-gray-500 dark:text-gray-400">
             Your cart is empty
           </div>
           <div v-else class="space-y-4">
             <div 
               v-for="item in cartStore.items" 
               :key="item.id"
-              class="flex items-center space-x-4 bg-gray-50 p-3 rounded-lg"
+              class="flex items-center space-x-4 bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg"
             >
               <img 
                 :src="item.image" 
@@ -177,19 +177,19 @@
                 class="w-16 h-16 object-cover rounded"
               >
               <div class="flex-1">
-                <h3 class="font-medium text-sm">{{ item.name }}</h3>
+                <h3 class="font-medium text-sm text-gray-900 dark:text-white">{{ item.name }}</h3>
                 <p class="text-blue-600 font-semibold">${{ item.price }}</p>
                 <div class="flex items-center space-x-2 mt-1">
                   <button 
                     @click="cartStore.updateQuantity(item.id, item.quantity - 1)"
-                    class="w-6 h-6 bg-gray-200 rounded flex items-center justify-center hover:bg-gray-300"
+                    class="w-6 h-6 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200"
                   >
                     -
                   </button>
                   <span class="text-sm w-8 text-center">{{ item.quantity }}</span>
                   <button 
                     @click="cartStore.updateQuantity(item.id, item.quantity + 1)"
-                    class="w-6 h-6 bg-gray-200 rounded flex items-center justify-center hover:bg-gray-300"
+                    class="w-6 h-6 bg-gray-200 dark:bg-gray-600 rounded flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200"
                   >
                     +
                   </button>
@@ -206,8 +206,8 @@
         </div>
 
         <!-- Cart Footer -->
-        <div v-if="cartStore.items.length > 0" class="border-t p-4 space-y-3">
-          <div class="flex justify-between items-center">
+        <div v-if="cartStore.items.length > 0" class="border-t border-gray-200 dark:border-gray-700 p-4 space-y-3">
+          <div class="flex justify-between items-center text-gray-900 dark:text-white">
             <span class="font-semibold">Total:</span>
             <span class="text-xl font-bold text-blue-600">${{ cartStore.totalPrice.toFixed(2) }}</span>
           </div>
@@ -229,28 +229,28 @@
       class="fixed inset-0 bg-black bg-opacity-50 z-40"
     />
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12 relative z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Footer: fixed dark background; text follows theme -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-12 relative z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 footer-text transition-colors duration-300">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div class="flex items-center space-x-2 mb-4">
               <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
                 <Icon name="heroicons:microphone" class="w-6 h-6 text-white" />
               </div>
-              <span class="text-lg font-bold">PulseTunez</span>
+              <span class="text-lg font-bold footer-heading">PulseTunez</span>
             </div>
-            <p class="text-gray-400">Your premium destination for audio gadgets, musical instruments, and studio equipment.</p>
+            <p class="footer-muted">Your premium destination for audio gadgets, musical instruments, and studio equipment.</p>
           </div>
           
           <div>
-            <h3 class="font-semibold mb-4">Categories</h3>
-            <ul class="space-y-2 text-gray-400">
+            <h3 class="font-semibold mb-4 footer-heading">Categories</h3>
+            <ul class="space-y-2 footer-muted">
               <li v-for="category in productStore.categories" :key="category.id">
                 <NuxtLink 
                   :to="`/category/${category.id}`" 
-                  class="hover:text-white transition-colors"
-                  :class="{ 'text-blue-300 !text-gray-400': $route.path.startsWith(`/category/${category.id}`) }"
+                  class="footer-link transition-colors"
+                  :class="{ 'footer-link-active font-medium': $route.path.startsWith(`/category/${category.id}`) }"
                 >
                   {{ category.name }}
                 </NuxtLink>
@@ -259,13 +259,13 @@
           </div>
           
           <div>
-            <h3 class="font-semibold mb-4">Quick Links</h3>
-            <ul class="space-y-2 text-gray-400">
+            <h3 class="font-semibold mb-4 footer-heading">Quick Links</h3>
+            <ul class="space-y-2 footer-muted">
               <li>
                 <NuxtLink 
                   to="/about" 
-                  class="hover:text-white transition-colors"
-                  :class="{ 'text-blue-300 !text-gray-400': $route.path === '/about' }"
+                  class="footer-link transition-colors"
+                  :class="{ 'footer-link-active font-medium': $route.path === '/about' }"
                 >
                   About Us
                 </NuxtLink>
@@ -273,8 +273,8 @@
               <li>
                 <NuxtLink 
                   to="/contact" 
-                  class="hover:text-white transition-colors"
-                  :class="{ 'text-blue-300 !text-gray-400': $route.path === '/contact' }"
+                  class="footer-link transition-colors"
+                  :class="{ 'footer-link-active font-medium': $route.path === '/contact' }"
                 >
                   Contact
                 </NuxtLink>
@@ -282,8 +282,8 @@
               <li>
                 <NuxtLink 
                   to="/settings" 
-                  class="hover:text-white transition-colors"
-                  :class="{ 'text-blue-300 !text-gray-400': $route.path === '/settings' }"
+                  class="footer-link transition-colors"
+                  :class="{ 'footer-link-active font-medium': $route.path === '/settings' }"
                 >
                   Settings
                 </NuxtLink>
@@ -291,8 +291,8 @@
               <li>
                 <NuxtLink 
                   to="/faq" 
-                  class="hover:text-white transition-colors"
-                  :class="{ 'text-blue-300 !text-gray-400': $route.path === '/faq' }"
+                  class="footer-link transition-colors"
+                  :class="{ 'footer-link-active font-medium': $route.path === '/faq' }"
                 >
                   FAQ
                 </NuxtLink>
@@ -301,8 +301,8 @@
           </div>
           
           <div>
-            <h3 class="font-semibold mb-4">Contact Info</h3>
-            <div class="space-y-2 text-gray-400">
+            <h3 class="font-semibold mb-4 footer-heading">Contact Info</h3>
+            <div class="space-y-2 footer-muted">
               <p class="flex items-center space-x-2">
                 <Icon name="heroicons:device-phone-mobile" class="w-4 h-4" />
                 <span>08022738004</span>
@@ -312,13 +312,13 @@
                 <span>info@pulsetunez.com</span>
               </p>
               <div class="flex space-x-4 pt-4">
-                <a href="#" class="hover:text-blue-400 transition-colors">
+                <a href="#" class="footer-social transition-colors">
                   <Icon name="heroicons:facebook" class="w-5 h-5" />
                 </a>
-                <a href="#" class="hover:text-blue-400 transition-colors">
+                <a href="#" class="footer-social transition-colors">
                   <Icon name="heroicons:twitter" class="w-5 h-5" />
                 </a>
-                <a href="#" class="hover:text-blue-400 transition-colors">
+                <a href="#" class="footer-social transition-colors">
                   <Icon name="heroicons:instagram" class="w-5 h-5" />
                 </a>
               </div>
@@ -326,7 +326,7 @@
           </div>
         </div>
         
-        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center footer-muted">
           <p>&copy; 2024 PulseTunez. All rights reserved.</p>
         </div>
       </div>

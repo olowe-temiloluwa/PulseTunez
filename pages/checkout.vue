@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold mb-8">Checkout</h1>
+      <h1 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Checkout</h1>
 
       <div v-if="cartStore.items.length === 0" class="text-center py-16">
         <Icon name="shopping-cart" class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 class="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h3>
-        <p class="text-gray-500 mb-4">Add some products to your cart before checkout.</p>
+        <h3 class="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">Your cart is empty</h3>
+        <p class="text-gray-500 dark:text-gray-400 mb-4">Add some products to your cart before checkout.</p>
         <NuxtLink to="/" class="btn-primary">Continue Shopping</NuxtLink>
       </div>
 
@@ -14,32 +14,32 @@
         <!-- Checkout Form -->
         <div class="lg:col-span-2 space-y-6">
           <!-- Contact Information -->
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold mb-4">Contact Information</h2>
+          <div class="surface-card p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Contact Information</h2>
             <form @submit.prevent="submitOrder" class="space-y-4">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                  <label class="form-label">First Name</label>
                   <input 
                     v-model="orderForm.firstName"
                     type="text" 
                     required
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="form-input"
                   >
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                  <label class="form-label">Last Name</label>
                   <input 
                     v-model="orderForm.lastName"
                     type="text" 
                     required
-                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="form-input"
                   >
                 </div>
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <label class="form-label">Email</label>
                 <input 
                   v-model="orderForm.email"
                   type="email" 
@@ -49,7 +49,7 @@
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <label class="form-label">Phone</label>
                 <input 
                   v-model="orderForm.phone"
                   type="tel" 
@@ -61,11 +61,11 @@
           </div>
 
           <!-- Shipping Address -->
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold mb-4">Shipping Address</h2>
+          <div class="surface-card p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Shipping Address</h2>
             <form class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
+                <label class="form-label">Street Address</label>
                 <input 
                   v-model="orderForm.address"
                   type="text" 
@@ -76,7 +76,7 @@
               
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                  <label class="form-label">City</label>
                   <input 
                     v-model="orderForm.city"
                     type="text" 
@@ -85,7 +85,7 @@
                   >
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                  <label class="form-label">State</label>
                   <input 
                     v-model="orderForm.state"
                     type="text" 
@@ -96,7 +96,7 @@
               </div>
               
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
+                <label class="form-label">ZIP Code</label>
                 <input 
                   v-model="orderForm.zipCode"
                   type="text" 
@@ -108,8 +108,8 @@
           </div>
 
           <!-- Payment Method -->
-          <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold mb-4">Payment Method</h2>
+          <div class="surface-card p-6">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Payment Method</h2>
             <div class="space-y-3">
               <label class="flex items-center space-x-3 cursor-pointer">
                 <input 
@@ -136,14 +136,14 @@
                   value="cod"
                   class="text-blue-600"
                 >
-                <span>Cash on Delivery</span>
+                <span class="text-gray-900 dark:text-gray-100">Cash on Delivery</span>
               </label>
             </div>
 
             <!-- Card Payment Form -->
             <div v-if="orderForm.paymentMethod === 'card'" class="mt-4 space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+                <label class="form-label">Card Number</label>
                 <input 
                   v-model="orderForm.cardNumber"
                   type="text" 
@@ -153,7 +153,7 @@
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                  <label class="form-label">Expiry Date</label>
                   <input 
                     v-model="orderForm.expiryDate"
                     type="text" 
@@ -162,7 +162,7 @@
                   >
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                  <label class="form-label">CVV</label>
                   <input 
                     v-model="orderForm.cvv"
                     type="text" 
@@ -177,8 +177,8 @@
 
         <!-- Order Summary -->
         <div class="lg:col-span-1">
-          <div class="bg-white rounded-lg shadow-sm p-6 sticky top-24">
-            <h2 class="text-xl font-semibold mb-4">Order Summary</h2>
+          <div class="surface-card p-6 sticky top-24">
+            <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Order Summary</h2>
             
             <!-- Cart Items -->
             <div class="space-y-3 mb-6">
@@ -193,15 +193,15 @@
                   class="w-12 h-12 object-cover rounded"
                 >
                 <div class="flex-1">
-                  <h4 class="text-sm font-medium">{{ item.name }}</h4>
-                  <p class="text-xs text-gray-500">Qty: {{ item.quantity }}</p>
+                  <h4 class="text-sm font-medium text-gray-900 dark:text-white">{{ item.name }}</h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Qty: {{ item.quantity }}</p>
                 </div>
                 <span class="font-medium">${{ (item.price * item.quantity).toFixed(2) }}</span>
               </div>
             </div>
 
             <!-- Price Breakdown -->
-            <div class="border-t pt-4 space-y-2">
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2 text-gray-700 dark:text-gray-300">
               <div class="flex justify-between">
                 <span>Subtotal</span>
                 <span>${{ cartStore.totalPrice.toFixed(2) }}</span>
@@ -215,7 +215,7 @@
                 <span>${{ tax.toFixed(2) }}</span>
               </div>
               <div class="border-t pt-2">
-                <div class="flex justify-between text-lg font-semibold">
+                <div class="flex justify-between text-lg font-semibold text-gray-900 dark:text-white">
                   <span>Total</span>
                   <span class="text-blue-600">${{ total.toFixed(2) }}</span>
                 </div>
@@ -233,7 +233,7 @@
             </button>
 
             <!-- Security Note -->
-            <div class="mt-4 text-center text-sm text-gray-500">
+            <div class="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
               <Icon name="shield" class="w-4 h-4 inline mr-1" />
               Secure checkout powered by PulseTunez
             </div>
@@ -284,18 +284,13 @@ const submitOrder = async () => {
     // Simulate order processing
     await new Promise(resolve => setTimeout(resolve, 2000))
     
-    // Show success message
-    const toast = useToast()
-    toast.success('Order placed successfully!')
-    
     // Clear cart
     cartStore.clearCart()
     
     // Redirect to success page
     await navigateTo('/order-success')
-  } catch (error) {
-    const toast = useToast()
-    toast.error('Failed to place order. Please try again.')
+  } catch {
+    alert('Failed to place order. Please try again.')
   } finally {
     isProcessing.value = false
   }

@@ -3,13 +3,14 @@
     <!-- Fixed Musical Gadget Background -->
     <div class="fixed inset-0 z-0">
       <!-- Musical Equipment Showcase Background -->
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#1a233a] to-[#0b1120]">
+      <div class="absolute inset-0 bg-gradient-to-br from-slate-200 via-blue-100
+       to-indigo-100 dark:bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] dark:from-[#1a233a] dark:to-[#0b1120] transition-colors duration-300">
         <!-- Musical Equipment Grid Pattern -->
         <div class="absolute inset-0 opacity-10" style="background: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.1) 2px, transparent 2px); background-size: 60px 60px;"></div>
         
         <!-- Floating Musical Equipment Icons -->
-        <div class="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 backdrop-blur-2xl rounded-full animate-float flex items-center justify-center">
-          <Icon name="heroicons:speaker-wave" class="w-16 h-16 text-blue-300/40" />
+        <div class="absolute top-20 left-10 w-32 h-32 bg-blue-500/20 dark:bg-blue-500/10 backdrop-blur-2xl rounded-full animate-float flex items-center justify-center">
+          <Icon name="heroicons:speaker-wave" class="w-16 h-16 text-blue-500/50 dark:text-blue-300/40" />
         </div>
         <div class="absolute top-40 right-20 w-40 h-40 bg-purple-500/10 backdrop-blur-2xl rounded-full animate-float animation-delay-2000 flex items-center justify-center">
           <Icon name="heroicons:musical-note" class="w-20 h-20 text-purple-300/40" />
@@ -58,34 +59,34 @@
         </div>
       </div>
       
-      <!-- Dark Overlay for better text visibility -->
-      <div class="absolute inset-0 bg-black/50"></div>
+      <!-- Overlay for text visibility -->
+      <div class="absolute inset-0 bg-white/30 dark:bg-black/50 transition-colors duration-300"></div>
     </div>
     
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
       <div class="text-center">
         <!-- Enhanced Logo -->
         <div class="mb-8 animate-fade-in-down">
-          <div class="inline-flex items-center justify-center w-24 h-24 bg-white/10 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-500">
-            <Icon name="heroicons:microphone" class="w-12 h-12 text-white animate-pulse" />
+          <div class="inline-flex items-center justify-center w-24 h-24 bg-white/80 dark:bg-white/10 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-white/20 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-500">
+            <Icon name="heroicons:microphone" class="w-12 h-12 text-blue-600 dark:text-white animate-pulse" />
           </div>
           <div class="mt-4">
-            <h1 class="text-6xl md:text-7xl font-black text-purple-400 ">
+            <h1 class="text-6xl md:text-7xl font-black text-indigo-600 dark:text-purple-400">
               PulseTunez
             </h1>
-            <p class="text-xl md:text-2xl text-white/90 font-light tracking-wide">Your Audio Universe</p>
+            <p class="text-xl md:text-2xl text-gray-700 dark:text-white/90 font-light tracking-wide">Your Audio Universe</p>
           </div>
         </div>
         
         <!-- Enhanced Hero Content -->
         <div>
-          <h2 class="text-4xl md:text-6xl font-bold text-white mb-6">
+          <h2 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
             Discover Premium
-            <span class="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            <span class="block bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
               Audio Equipment
             </span>
           </h2>
-          <p class="text-xl md:text-2xl text-white/80 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p class="text-xl md:text-2xl text-gray-700 dark:text-white/80 mb-8 max-w-3xl mx-auto leading-relaxed">
             Experience the perfect blend of cutting-edge technology and exceptional sound quality. 
             From professional studio gear to personal audio essentials.
           </p>
@@ -103,7 +104,7 @@
             
             <NuxtLink 
               to="/about" 
-              class="group inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-xl text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transform hover:scale-105 transition-all duration-300"
+              class="group inline-flex items-center px-8 py-4 bg-white/90 dark:bg-white/10 backdrop-blur-xl text-gray-900 dark:text-white font-semibold rounded-xl border border-gray-300 dark:border-white/20 hover:bg-white dark:hover:bg-white/20 transform hover:scale-105 transition-all duration-300"
             >
               <Icon name="heroicons:play-circle" class="w-5 h-5 mr-2" />
               Explore More
@@ -111,7 +112,7 @@
           </div>
           
           <!-- Enhanced Trust Indicators -->
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-8 text-white/80">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-8 text-gray-700 dark:text-white/80">
             <div class="flex items-center space-x-2">
               <Icon name="heroicons:truck" class="w-5 h-5" />
               <span class="font-medium">Free Shipping</span>
@@ -133,10 +134,10 @@
           class="absolute bottom-2 left-1 right-1 transform -translate-x-1/2 animate-bounce cursor-pointer"
           @click="scrollToNextSection"
         >
-          <div class="flex flex-col items-center text-white/80 hover:text-white transition-colors">
+          <div class="flex flex-col items-center text-gray-600 dark:text-white/80 hover:text-gray-900 dark:hover:text-white transition-colors">
             <span class="text-xs mb-2 font-medium tracking-wider animate-pulse">EXPLORE MORE</span>
-            <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-              <div class="w-1 h-3 bg-white/60 rounded-full mt-2 animate-bounce"></div>
+            <div class="w-6 h-10 border-2 border-gray-400 dark:border-white/30 rounded-full flex justify-center">
+              <div class="w-1 h-3 bg-gray-500 dark:bg-white/60 rounded-full mt-2 animate-bounce"></div>
             </div>
           </div>
         </div>

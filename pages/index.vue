@@ -21,12 +21,7 @@
 </template>
 
 <script setup>
-// Import components
-import HeroSection from '~/components/HeroSection.vue'
-import CategoriesSection from '~/components/CategoriesSection.vue'
-import FeaturedProductsSection from '~/components/FeaturedProductsSection.vue'
-import FeaturesSection from '~/components/FeaturesSection.vue'
-import CTASection from '~/components/CTASection.vue'
-import StatsSection from '~/components/StatsSection.vue'
-import index from './admin/index.vue'
+useHead({
+  title: 'Home - PulseTunez'
+})
 </script>

@@ -27,7 +27,7 @@
                   @click="setTheme('light')"
                   :class="[
                     'relative p-4 rounded-lg border-2 transition-all duration-200',
-                    currentTheme === 'light' 
+                    theme === 'light' 
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
                       : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                   ]"
@@ -40,7 +40,7 @@
                     <span class="text-sm text-gray-500 dark:text-gray-400 mt-1">Bright and clean</span>
                   </div>
                   <div 
-                    v-if="currentTheme === 'light'"
+                    v-if="theme === 'light'"
                     class="absolute top-2 right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center"
                   >
                     <Icon name="heroicons:check" class="w-4 h-4 text-white" />
@@ -52,7 +52,7 @@
                   @click="setTheme('dark')"
                   :class="[
                     'relative p-4 rounded-lg border-2 transition-all duration-200',
-                    currentTheme === 'dark' 
+                    theme === 'dark' 
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
                       : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                   ]"
@@ -65,7 +65,7 @@
                     <span class="text-sm text-gray-500 dark:text-gray-400 mt-1">Easy on the eyes</span>
                   </div>
                   <div 
-                    v-if="currentTheme === 'dark'"
+                    v-if="theme === 'dark'"
                     class="absolute top-2 right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center"
                   >
                     <Icon name="heroicons:check" class="w-4 h-4 text-white" />
@@ -77,20 +77,20 @@
                   @click="setTheme('device')"
                   :class="[
                     'relative p-4 rounded-lg border-2 transition-all duration-200',
-                    currentTheme === 'device' 
+                    theme === 'device' 
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
                       : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                   ]"
                 >
                   <div class="flex flex-col items-center">
-                    <div class="w-12 h-12 bg-gradient-to-br from-white to-gray-900 rounded-lg border-2 border-gray-300 mb-3 flex items-center justify-center">
-                      <Icon name="heroicons:computer-desktop" class="w-6 h-6 text-gray-600" />
+                    <div class="w-12 h-12 bg-gradient-to-br from-white to-gray-900 rounded-lg border-2 border-gray-300 dark:border-gray-600 mb-3 flex items-center justify-center">
+                      <Icon name="heroicons:computer-desktop" class="w-6 h-6 text-gray-600 dark:text-gray-300" />
                     </div>
                     <span class="font-medium text-gray-900 dark:text-white">Device</span>
                     <span class="text-sm text-gray-500 dark:text-gray-400 mt-1">Follow system</span>
                   </div>
                   <div 
-                    v-if="currentTheme === 'device'"
+                    v-if="theme === 'device'"
                     class="absolute top-2 right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center"
                   >
                     <Icon name="heroicons:check" class="w-4 h-4 text-white" />
@@ -116,37 +116,17 @@
               </label>
               <div class="flex items-center space-x-4">
                 <button
-                  @click="setFontSize('small')"
+                  v-for="size in ['small', 'medium', 'large']"
+                  :key="size"
+                  @click="setFontSize(size)"
                   :class="[
-                    'px-4 py-2 rounded-lg border-2 transition-all duration-200',
-                    fontSize === 'small' 
+                    'px-4 py-2 rounded-lg border-2 transition-all duration-200 capitalize',
+                    fontSize === size 
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
                       : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300'
                   ]"
                 >
-                  Small
-                </button>
-                <button
-                  @click="setFontSize('medium')"
-                  :class="[
-                    'px-4 py-2 rounded-lg border-2 transition-all duration-200',
-                    fontSize === 'medium' 
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
-                      : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                  ]"
-                >
-                  Medium
-                </button>
-                <button
-                  @click="setFontSize('large')"
-                  :class="[
-                    'px-4 py-2 rounded-lg border-2 transition-all duration-200',
-                    fontSize === 'large' 
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400' 
-                      : 'border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300'
-                  ]"
-                >
-                  Large
+                  {{ size }}
                 </button>
               </div>
             </div>
@@ -189,7 +169,6 @@
           </div>
           
           <div class="space-y-6">
-            <!-- Email Notifications -->
             <div>
               <div class="flex items-center justify-between">
                 <div>
@@ -217,7 +196,6 @@
               </div>
             </div>
 
-            <!-- Stock Alerts -->
             <div>
               <div class="flex items-center justify-between">
                 <div>
@@ -302,150 +280,54 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+const { theme, setTheme } = useTheme()
 
-// Theme settings
-const currentTheme = ref('device')
-
-// Display settings
 const fontSize = ref('medium')
 const animationsEnabled = ref(true)
-
-// Notification settings
 const emailNotifications = ref(true)
 const stockAlerts = ref(true)
 
-// Load settings from localStorage
-onMounted(() => {
-  // Load theme
-  const savedTheme = localStorage.getItem('theme')
-  if (savedTheme) {
-    currentTheme.value = savedTheme
-    applyTheme(savedTheme)
-  } else {
-    // Default to light theme
-    currentTheme.value = 'light'
-    applyTheme('light')
-  }
-
-  // Load other settings
-  fontSize.value = localStorage.getItem('fontSize') || 'medium'
-  animationsEnabled.value = localStorage.getItem('animationsEnabled') !== 'false'
-  emailNotifications.value = localStorage.getItem('emailNotifications') !== 'false'
-  stockAlerts.value = localStorage.getItem('stockAlerts') !== 'false'
-
-  // Apply font size
-  applyFontSize(fontSize.value)
-  
-  // Apply animations setting
-  applyAnimations(animationsEnabled.value)
-})
-
-// Theme functions
-const setTheme = (theme) => {
-  currentTheme.value = theme
-  localStorage.setItem('theme', theme)
-  applyTheme(theme)
-}
-
-const applyTheme = (theme) => {
+const applyFontSizeClasses = (size) => {
+  if (!import.meta.client) return
   const html = document.documentElement
-  const body = document.body
-  
-  console.log(`Applying theme: ${theme}`)
-  
-  // Remove dark class first
-  html.classList.remove('dark')
-  
-  if (theme === 'dark') {
-    html.classList.add('dark')
-    console.log('Added dark class to HTML')
-  } else if (theme === 'light') {
-    // Light theme - no dark class
-    console.log('Removed dark class from HTML')
-  } else if (theme === 'device') {
-    // Follow system preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      html.classList.add('dark')
-      console.log('Applied device theme (dark)')
-    } else {
-      console.log('Applied device theme (light)')
-    }
-  }
-  
-  // Force a complete repaint
-  setTimeout(() => {
-    html.style.display = 'none'
-    html.offsetHeight // Force reflow
-    html.style.display = ''
-    
-    // Also force body repaint
-    body.style.display = 'none'
-    body.offsetHeight
-    body.style.display = ''
-  }, 10)
+  html.classList.remove('text-sm', 'text-base', 'text-lg')
+  if (size === 'small') html.classList.add('text-sm')
+  if (size === 'large') html.classList.add('text-lg')
 }
 
-// Display functions
+const applyAnimationClasses = (enabled) => {
+  if (!import.meta.client) return
+  document.documentElement.classList.toggle('no-animations', !enabled)
+}
+
 const setFontSize = (size) => {
   fontSize.value = size
   localStorage.setItem('fontSize', size)
-  applyFontSize(size)
-}
-
-const applyFontSize = (size) => {
-  const html = document.documentElement
-  html.classList.remove('text-sm', 'text-base', 'text-lg')
-  
-  if (size === 'small') {
-    html.classList.add('text-sm')
-  } else if (size === 'large') {
-    html.classList.add('text-lg')
-  }
-  // medium is default (text-base)
+  applyFontSizeClasses(size)
 }
 
 const toggleAnimations = () => {
   animationsEnabled.value = !animationsEnabled.value
-  localStorage.setItem('animationsEnabled', animationsEnabled.value)
-  applyAnimations(animationsEnabled.value)
+  localStorage.setItem('animationsEnabled', String(animationsEnabled.value))
+  applyAnimationClasses(animationsEnabled.value)
 }
 
-const applyAnimations = (enabled) => {
-  const html = document.documentElement
-  if (enabled) {
-    html.classList.remove('no-animations')
-  } else {
-    html.classList.add('no-animations')
-  }
-}
-
-// Notification functions
 const toggleEmailNotifications = () => {
   emailNotifications.value = !emailNotifications.value
-  localStorage.setItem('emailNotifications', emailNotifications.value)
+  localStorage.setItem('emailNotifications', String(emailNotifications.value))
 }
 
 const toggleStockAlerts = () => {
   stockAlerts.value = !stockAlerts.value
-  localStorage.setItem('stockAlerts', stockAlerts.value)
+  localStorage.setItem('stockAlerts', String(stockAlerts.value))
 }
 
-// Listen for system theme changes
 onMounted(() => {
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  mediaQuery.addEventListener('change', () => {
-    if (currentTheme.value === 'device') {
-      applyTheme('device')
-    }
-  })
+  fontSize.value = localStorage.getItem('fontSize') || 'medium'
+  animationsEnabled.value = localStorage.getItem('animationsEnabled') !== 'false'
+  emailNotifications.value = localStorage.getItem('emailNotifications') !== 'false'
+  stockAlerts.value = localStorage.getItem('stockAlerts') !== 'false'
+  applyFontSizeClasses(fontSize.value)
+  applyAnimationClasses(animationsEnabled.value)
 })
 </script>
-
-<style scoped>
-.no-animations * {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-}
-</style>

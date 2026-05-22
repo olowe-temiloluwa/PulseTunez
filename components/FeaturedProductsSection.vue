@@ -8,7 +8,7 @@
     
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-black mb-6 text-blue-600">
+        <h2 class="text-4xl md:text-5xl font-black mb-6 text-blue-600 dark:text-blue-400">
           Featured Products
         </h2>
         <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Handpicked premium audio equipment for the ultimate sound experience</p>

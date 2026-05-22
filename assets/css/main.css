@@ -16,6 +16,11 @@
 @layer base {
   body {
     font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-gray-50 text-gray-900 transition-colors duration-300;
+  }
+
+  html.dark body {
+    @apply bg-gray-900 text-gray-100;
   }
   
   /* Modern Scrollbar */
@@ -57,9 +62,41 @@
   .btn-secondary {
     @apply bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
   }
+
+  html.dark .btn-secondary {
+    @apply bg-gray-700 hover:bg-gray-600 text-gray-100;
+  }
   
   .product-card {
     @apply bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden;
+  }
+
+  html.dark .product-card {
+    @apply bg-gray-800 border border-gray-700;
+  }
+
+  .surface-card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200;
+  }
+
+  html.dark .surface-card {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+
+  html.dark .form-label {
+    @apply text-gray-300;
+  }
+
+  .form-input {
+    @apply w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors;
+  }
+
+  html.dark .form-input {
+    @apply border-gray-600 bg-gray-700 text-gray-100 placeholder-gray-400;
   }
   
   .category-card {
@@ -78,6 +115,43 @@
   
   .glass-dark {
     @apply bg-gray-800/20 backdrop-blur-xl border border-gray-700/20;
+  }
+
+  /* Footer: fixed bg-gray-900; text shifts with app theme */
+  .footer-heading {
+    @apply text-white;
+  }
+
+  .footer-muted {
+    @apply text-gray-300;
+  }
+
+  html.dark .footer-muted {
+    @apply text-gray-400;
+  }
+
+  .footer-link {
+    @apply text-gray-300 hover:text-white;
+  }
+
+  html.dark .footer-link {
+    @apply text-gray-400 hover:text-white;
+  }
+
+  .footer-link-active {
+    @apply text-blue-300;
+  }
+
+  html.dark .footer-link-active {
+    @apply text-blue-400;
+  }
+
+  .footer-social {
+    @apply text-gray-300 hover:text-blue-400;
+  }
+
+  html.dark .footer-social {
+    @apply text-gray-400 hover:text-blue-400;
   }
 }
 
@@ -269,6 +343,14 @@
 .scroll-animate-scale.visible {
   opacity: 1;
   transform: scale(1);
+}
+
+/* Disable animations when user turns them off in settings */
+html.no-animations *,
+html.no-animations *::before,
+html.no-animations *::after {
+  animation: none !important;
+  transition-duration: 0.01ms !important;
 }
 
 /* Smooth scrolling */

@@ -1,18 +1,18 @@
 <template>
-  <div class="min-h-screen bg-gray-50 py-8">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Category Header -->
       <div class="mb-8">
-        <h1 class="text-3xl font-bold mb-2">{{ category?.name }}</h1>
-        <p class="text-gray-600">{{ category?.description }}</p>
+        <h1 class="text-3xl font-bold mb-2 text-gray-900 dark:text-white">{{ category?.name }}</h1>
+        <p class="text-gray-600 dark:text-gray-300">{{ category?.description }}</p>
       </div>
 
       <!-- Filters and Sort -->
-      <div class="bg-white rounded-lg shadow-sm p-4 mb-8">
+      <div class="surface-card p-4 mb-8">
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
           <div class="flex items-center space-x-4">
-            <span class="text-gray-600">Filter by:</span>
-            <select v-model="selectedPriceRange" class="border rounded-lg px-3 py-2">
+            <span class="text-gray-600 dark:text-gray-300">Filter by:</span>
+            <select v-model="selectedPriceRange" class="form-input w-auto py-2">
               <option value="all">All Prices</option>
               <option value="0-100">Under $100</option>
               <option value="100-300">$100 - $300</option>
@@ -21,8 +21,8 @@
             </select>
           </div>
           <div class="flex items-center space-x-4">
-            <span class="text-gray-600">Sort by:</span>
-            <select v-model="sortBy" class="border rounded-lg px-3 py-2">
+            <span class="text-gray-600 dark:text-gray-300">Sort by:</span>
+            <select v-model="sortBy" class="form-input w-auto py-2">
               <option value="name">Name</option>
               <option value="price-low">Price: Low to High</option>
               <option value="price-high">Price: High to Low</option>
@@ -49,8 +49,8 @@
             </div>
           </div>
           <div class="p-6">
-            <h3 class="text-xl font-semibold mb-2">{{ product.name }}</h3>
-            <p class="text-gray-600 mb-4">{{ product.description }}</p>
+            <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ product.name }}</h3>
+            <p class="text-gray-600 dark:text-gray-300 mb-4">{{ product.description }}</p>
             
             <!-- Features -->
             <div class="mb-4">
@@ -58,7 +58,7 @@
                 <span 
                   v-for="feature in product.features.slice(0, 2)" 
                   :key="feature"
-                  class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded"
+                  class="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-2 py-1 rounded"
                 >
                   {{ feature }}
                 </span>
@@ -66,8 +66,8 @@
             </div>
 
             <div class="flex items-center justify-between mb-4">
-              <span class="text-2xl font-bold text-blue-600">${{ product.price }}</span>
-              <span class="text-sm text-gray-500">{{ product.stock }} in stock</span>
+              <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">${{ product.price }}</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400">{{ product.stock }} in stock</span>
             </div>
 
             <div class="flex gap-2">
@@ -79,7 +79,7 @@
               </button>
               <NuxtLink 
                 :to="`/product/${product.id}`"
-                class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors"
               >
                 <Icon name="heroicons:eye" class="w-5 h-5" />
               </NuxtLink>
@@ -91,8 +91,8 @@
       <!-- No Products Found -->
       <div v-else class="text-center py-16">
         <Icon name="heroicons:magnifying-glass-x-mark" class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 class="text-xl font-semibold text-gray-600 mb-2">No products found</h3>
-        <p class="text-gray-500">Try adjusting your filters or browse other categories.</p>
+        <h3 class="text-xl font-semibold text-gray-600 dark:text-gray-300 mb-2">No products found</h3>
+        <p class="text-gray-500 dark:text-gray-400">Try adjusting your filters or browse other categories.</p>
       </div>
     </div>
   </div>
