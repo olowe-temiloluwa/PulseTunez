@@ -30,7 +30,7 @@
               />
               <div class="absolute top-4 right-4">
                 <button
-                  @click="cartStore.addToCart(product)"
+                  @click="cartStore.addItem(product)"
                   class="bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg hover:bg-blue-600 dark:hover:bg-blue-600 transition-colors duration-300 group"
                 >
                   <Icon name="heroicons:shopping-cart" class="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-white" />
