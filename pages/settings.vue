@@ -279,7 +279,10 @@
               </div>
             </button>
 
-            <button class="w-full text-left px-4 py-3 rounded-lg border border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+            <button 
+              @click="handleLogout"
+              class="w-full text-left px-4 py-3 rounded-lg border border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            >
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <Icon name="heroicons:arrow-right-on-rectangle" class="w-5 h-5 text-red-600 dark:text-red-400 mr-3" />
@@ -296,12 +299,20 @@
 </template>
 
 <script setup>
+import { useAuthStore } from '~/stores/auth'
+
 const { theme, setTheme } = useTheme()
+const authStore = useAuthStore()
 
 const fontSize = ref('medium')
 const animationsEnabled = ref(true)
 const emailNotifications = ref(true)
 const stockAlerts = ref(true)
+
+const handleLogout = () => {
+  authStore.logout()
+  navigateTo('/')
+}
 
 const applyFontSizeClasses = (size) => {
   if (!import.meta.client) return

@@ -22,14 +22,34 @@
               Home
             </NuxtLink>
             <NuxtLink 
-              v-for="category in productStore.categories" 
-              :key="category.id"
-              :to="`/category/${category.id}`"
-              class="text-gray-600 hover:text-blue-600 transition-colors"
-              :class="{ 'text-blue-600 font-bold': $route.path.startsWith(`/category/${category.id}`) }"
+              to="/shop" 
+              class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+              :class="{ 'text-blue-600 font-bold': $route.path === '/shop' }"
             >
-              {{ category.name }}
+              Shop
             </NuxtLink>
+            
+            <!-- Category Dropdown -->
+            <div class="relative group">
+              <button class="text-gray-600 hover:text-blue-600 transition-colors font-medium flex items-center">
+                Category
+                <Icon name="heroicons:chevron-down" class="w-4 h-4 ml-1" />
+              </button>
+              <div class="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div class="py-2">
+                  <NuxtLink 
+                    v-for="category in productStore.categories" 
+                    :key="category.id"
+                    :to="`/category/${category.id}`"
+                    class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20': $route.path.startsWith(`/category/${category.id}`) }"
+                  >
+                    {{ category.name }}
+                  </NuxtLink>
+                </div>
+              </div>
+            </div>
+            
             <NuxtLink 
               to="/about" 
               class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
@@ -48,28 +68,53 @@
 
           <!-- Action Buttons -->
           <div class="flex items-center space-x-4">
-            <!-- Settings Icon -->
-            <NuxtLink 
-              to="/settings" 
-              class="p-2 text-gray-600 hover:text-blue-600 transition-colors"
-              :class="{ 'text-blue-600': $route.path === '/settings' }"
-            >
-              <Icon name="heroicons:cog-6-tooth" class="w-6 h-6" />
-            </NuxtLink>
-            
-            <!-- Cart Button -->
-            <button 
-              @click="cartStore.toggleCart"
-              class="relative p-2 text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              <Icon name="heroicons:shopping-cart" class="w-6 h-6" />
-              <span 
-                v-if="cartStore.items.length > 0"
-                class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+            <!-- Show when NOT signed in -->
+            <template v-if="!authStore.isAuthenticated">
+              <!-- Login Button -->
+              <NuxtLink 
+                to="/login" 
+                class="hidden sm:inline-flex items-center px-4 py-2 text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                :class="{ 'text-blue-600': $route.path === '/login' }"
               >
-                {{ cartStore.items.length }}
-              </span>
-            </button>
+                <Icon name="heroicons:user" class="w-5 h-5 mr-1" />
+                <span>Sign In</span>
+              </NuxtLink>
+              
+              <!-- Register Button -->
+              <NuxtLink 
+                to="/register" 
+                class="hidden sm:inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                :class="{ 'bg-blue-700': $route.path === '/register' }"
+              >
+                Sign Up
+              </NuxtLink>
+            </template>
+
+            <!-- Show when signed in -->
+            <template v-else>
+              <!-- User Icon -->
+              <NuxtLink 
+                to="/settings" 
+                class="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                :class="{ 'text-blue-600': $route.path === '/settings' }"
+              >
+                <Icon name="heroicons:user-circle" class="w-7 h-7" />
+              </NuxtLink>
+              
+              <!-- Cart Button (only when signed in) -->
+              <button 
+                @click="cartStore.toggleCart"
+                class="relative p-2 text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                <Icon name="heroicons:shopping-cart" class="w-6 h-6" />
+                <span 
+                  v-if="cartStore.items.length > 0"
+                  class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                >
+                  {{ cartStore.items.length }}
+                </span>
+              </button>
+            </template>
 
             <!-- Mobile Menu Toggle -->
             <button 
@@ -94,15 +139,37 @@
             Home
           </NuxtLink>
           <NuxtLink 
-            v-for="category in productStore.categories" 
-            :key="category.id"
-            :to="`/category/${category.id}`"
+            to="/shop" 
             class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            :class="{ 'text-blue-600 font-bold': $route.path.startsWith(`/category/${category.id}`) }"
+            :class="{ 'text-blue-600 font-bold': $route.path === '/shop' }"
             @click="mobileMenuOpen = false"
           >
-            {{ category.name }}
+            Shop
           </NuxtLink>
+          
+          <!-- Mobile Category Dropdown -->
+          <div>
+            <button 
+              @click="categoryDropdownOpen = !categoryDropdownOpen"
+              class="w-full flex items-center justify-between py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+            >
+              Category
+              <Icon :name="categoryDropdownOpen ? 'heroicons:chevron-up' : 'heroicons:chevron-down'" class="w-4 h-4" />
+            </button>
+            <div v-if="categoryDropdownOpen" class="pl-4 space-y-1 mt-2">
+              <NuxtLink 
+                v-for="category in productStore.categories" 
+                :key="category.id"
+                :to="`/category/${category.id}`"
+                class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                :class="{ 'text-blue-600 font-bold': $route.path.startsWith(`/category/${category.id}`) }"
+                @click="mobileMenuOpen = false"
+              >
+                {{ category.name }}
+              </NuxtLink>
+            </div>
+          </div>
+          
           <NuxtLink 
             to="/about" 
             class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -119,14 +186,42 @@
           >
             Contact
           </NuxtLink>
-          <NuxtLink 
-            to="/settings" 
-            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            :class="{ 'text-blue-600 font-bold': $route.path === '/settings' }"
-            @click="mobileMenuOpen = false"
-          >
-            Settings
-          </NuxtLink>
+          <!-- Show when signed in -->
+          <template v-if="authStore.isAuthenticated">
+            <NuxtLink 
+              to="/settings" 
+              class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              :class="{ 'text-blue-600 font-bold': $route.path === '/settings' }"
+              @click="mobileMenuOpen = false"
+            >
+              <div class="flex items-center">
+                <Icon name="heroicons:user-circle" class="w-5 h-5 mr-2" />
+                My Account
+              </div>
+            </NuxtLink>
+          </template>
+          
+          <!-- Show when NOT signed in -->
+          <template v-else>
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4 space-y-2">
+              <NuxtLink 
+                to="/login" 
+                class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+                :class="{ 'text-blue-600 font-bold': $route.path === '/login' }"
+                @click="mobileMenuOpen = false"
+              >
+                Sign In
+              </NuxtLink>
+              <NuxtLink 
+                to="/register" 
+                class="block py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors text-center"
+                :class="{ 'bg-blue-700': $route.path === '/register' }"
+                @click="mobileMenuOpen = false"
+              >
+                Sign Up
+              </NuxtLink>
+            </div>
+          </template>
         </div>
       </div>
     </nav>
@@ -337,8 +432,16 @@
 <script setup>
 import { useProductStore } from '~/stores/products'
 import { useCartStore } from '~/stores/cart'
+import { useAuthStore } from '~/stores/auth'
 
 const productStore = useProductStore()
 const cartStore = useCartStore()
+const authStore = useAuthStore()
 const mobileMenuOpen = ref(false)
+const categoryDropdownOpen = ref(false)
+
+// Initialize auth on mount
+onMounted(() => {
+  authStore.initializeAuth()
+})
 </script>

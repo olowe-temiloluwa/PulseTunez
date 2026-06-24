@@ -32,57 +32,63 @@
       </div>
 
       <!-- Products Grid -->
-      <div v-if="filteredProducts.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div v-if="filteredProducts.length > 0" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <div 
           v-for="product in filteredProducts" 
           :key="product.id"
-          class="product-card group"
+          class="group"
         >
-          <div class="relative">
-            <img 
-              :src="product.image" 
-              :alt="product.name"
-              class="w-full h-48 object-cover"
-            >
-            <div v-if="product.stock <= 5" class="absolute top-4 right-4 bg-orange-500 text-white px-2 py-1 rounded text-sm font-semibold">
-              Low Stock
-            </div>
-          </div>
-          <div class="p-6">
-            <h3 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{{ product.name }}</h3>
-            <p class="text-gray-600 dark:text-gray-300 mb-4">{{ product.description }}</p>
-            
-            <!-- Features -->
-            <div class="mb-4">
-              <div class="flex flex-wrap gap-2">
-                <span 
-                  v-for="feature in product.features.slice(0, 2)" 
-                  :key="feature"
-                  class="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 px-2 py-1 rounded"
+          <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
+            <!-- Product Image -->
+            <div class="relative h-36 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
+              <img
+                :src="product.image"
+                :alt="product.name"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div class="absolute top-2 right-2 flex space-x-1">
+                <button
+                  @click="cartStore.addItem(product)"
+                  class="bg-white dark:bg-gray-800 p-1.5 rounded-full shadow-md hover:bg-blue-600 dark:hover:bg-blue-600 transition-colors duration-300"
                 >
-                  {{ feature }}
+                  <Icon name="heroicons:shopping-cart" class="w-3.5 h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
+                </button>
+              </div>
+              <div class="absolute bottom-2 left-2">
+                <span class="bg-blue-600 text-white px-1.5 py-0.5 rounded-full text-xs font-medium">
+                  {{ category?.name }}
                 </span>
               </div>
             </div>
 
-            <div class="flex items-center justify-between mb-4">
-              <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">${{ product.price }}</span>
-              <span class="text-sm text-gray-500 dark:text-gray-400">{{ product.stock }} in stock</span>
-            </div>
+            <!-- Product Info -->
+            <div class="p-3">
+              <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
+              <p class="text-gray-600 dark:text-gray-300 text-xs mb-2 line-clamp-1">{{ product.description }}</p>
 
-            <div class="flex gap-2">
-              <button 
-                @click="cartStore.addItem(product)"
-                class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                Add to Cart
-              </button>
-              <NuxtLink 
-                :to="`/product/${product.id}`"
-                class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors"
-              >
-                <Icon name="heroicons:eye" class="w-5 h-5" />
-              </NuxtLink>
+              <!-- Features -->
+              <div class="flex flex-wrap gap-1 mb-2">
+                <span
+                  v-for="(feature, index) in product.features.slice(0, 1)"
+                  :key="index"
+                  class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded"
+                >
+                  {{ feature }}
+                </span>
+              </div>
+
+              <!-- Price and Stock -->
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="text-base font-bold text-blue-600 dark:text-blue-400">${{ product.price }}</span>
+                </div>
+                <NuxtLink
+                  :to="`/product/${product.id}`"
+                  class="text-xs bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  View
+                </NuxtLink>
+              </div>
             </div>
           </div>
         </div>

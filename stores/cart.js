@@ -15,6 +15,14 @@ export const useCartStore = defineStore('cart', {
 
   actions: {
     addItem(product) {
+      // Check if user is authenticated
+      const authStore = useAuthStore()
+      if (!authStore.isAuthenticated) {
+        // Redirect to login if not authenticated
+        navigateTo('/login')
+        return
+      }
+
       const existingItem = this.items.find(item => item.id === product.id)
       
       if (existingItem) {
