@@ -35,6 +35,7 @@ const route = useRoute()
 const navItems = [
   { to: '/admin', label: 'Dashboard', icon: 'heroicons:chart-bar' },
   { to: '/admin/products', label: 'Products', icon: 'heroicons:cube' },
+  { to: '/admin/ads', label: 'Ads', icon: 'heroicons:rectangle-stack' },
   { to: '/admin/users', label: 'Users', icon: 'heroicons:users' },
   { to: '/admin/analytics', label: 'Analytics', icon: 'heroicons:chart-pie' },
   { to: '/admin/orders', label: 'Orders', icon: 'heroicons:shopping-bag' },

@@ -12,7 +12,9 @@ export const useProductStore = defineStore('products', {
         description: 'High-quality wireless headphones with noise cancellation and premium sound quality.',
         image: 'https://picsum.photos/400/300?random=1',
         features: ['Bluetooth 5.0', 'Active Noise Cancellation', '30-hour battery life'],
-        stock: 15
+        stock: 15,
+        hotSale: true,
+        trending: true
       },
       {
         id: 2,
@@ -24,7 +26,9 @@ export const useProductStore = defineStore('products', {
         description: 'Studio-grade USB microphone perfect for podcasting and recording.',
         image: 'https://picsum.photos/400/300?random=2',
         features: ['USB-C Connection', 'Cardioid Pattern', 'Plug and Play'],
-        stock: 8
+        stock: 8,
+        hotSale: true,
+        trending: false
       },
       {
         id: 3,
@@ -36,7 +40,9 @@ export const useProductStore = defineStore('products', {
         description: 'Compact waterproof speaker with amazing sound quality.',
         image: 'https://picsum.photos/400/300?random=3',
         features: ['Waterproof IPX7', '12-hour battery', '360° sound'],
-        stock: 25
+        stock: 25,
+        hotSale: false,
+        trending: true
       },
       
       // Musical Gadgets
@@ -50,7 +56,9 @@ export const useProductStore = defineStore('products', {
         description: '88-key weighted digital piano with authentic piano sound.',
         image: 'https://picsum.photos/400/300?random=4',
         features: ['88 Weighted Keys', 'Multiple Voices', 'USB Connectivity'],
-        stock: 5
+        stock: 5,
+        hotSale: true,
+        trending: true
       },
       {
         id: 5,
@@ -62,7 +70,9 @@ export const useProductStore = defineStore('products', {
         description: 'Complete electric guitar package with amplifier and accessories.',
         image: 'https://picsum.photos/400/300?random=5',
         features: ['Solid Body', '20W Amp', 'Includes Accessories'],
-        stock: 12
+        stock: 12,
+        hotSale: true,
+        trending: false
       },
       {
         id: 6,
@@ -74,7 +84,9 @@ export const useProductStore = defineStore('products', {
         description: '25-key MIDI controller perfect for music production.',
         image: 'https://picsum.photos/400/300?random=6',
         features: ['25 Keys', 'Velocity Sensitive', 'USB Powered'],
-        stock: 18
+        stock: 18,
+        hotSale: false,
+        trending: false
       },
       
       // Studio Equipment
@@ -88,7 +100,9 @@ export const useProductStore = defineStore('products', {
         description: 'Professional audio interface for home recording studios.',
         image: 'https://picsum.photos/400/300?random=7',
         features: ['2 Inputs/2 Outputs', '48kHz/24-bit', 'Phantom Power'],
-        stock: 10
+        stock: 10,
+        hotSale: true,
+        trending: true
       },
       {
         id: 8,
@@ -100,7 +114,9 @@ export const useProductStore = defineStore('products', {
         description: 'Pair of professional studio monitors for accurate sound reproduction.',
         image: 'https://picsum.photos/400/300?random=8',
         features: ['Bi-amped Design', 'Room Correction', 'XLR/TRS Inputs'],
-        stock: 6
+        stock: 6,
+        hotSale: false,
+        trending: false
       },
       {
         id: 9,
@@ -112,7 +128,9 @@ export const useProductStore = defineStore('products', {
         description: 'Complete home recording setup with all essentials.',
         image: 'https://picsum.photos/400/300?random=9',
         features: ['Audio Interface', 'Microphone', 'Headphones', 'Software'],
-        stock: 4
+        stock: 4,
+        hotSale: true,
+        trending: true
       }
     ],
     categories: [

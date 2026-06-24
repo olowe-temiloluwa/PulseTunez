@@ -1,25 +1,72 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <!-- Ads Carousel -->
+    <section v-if="activeAds.length > 0" class="bg-white dark:bg-gray-900 overflow-hidden pt-2">
+      <div class="relative w-full">
+        <!-- Carousel Container -->
+        <div class="relative h-72 md:h-96 w-full overflow-hidden">
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div
+              v-for="(ad, index) in displayAds"
+              :key="ad.id"
+              class="absolute transition-all duration-700 ease-out cursor-pointer overflow-hidden rounded-lg shadow-2xl"
+              :class="getAdClass(index)"
+              @click="handleAdClick(ad)"
+            >
+              <NuxtLink :to="ad.link" class="block w-full h-full">
+                <img
+                  :src="ad.image"
+                  :alt="ad.title"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-4 md:p-6">
+                  <div class="w-full">
+                    <h3 class="text-base md:text-2xl font-bold text-white mb-1 md:mb-2 drop-shadow-lg">{{ ad.title }}</h3>
+                    <p v-if="ad.description && index === 1" class="text-white/90 text-xs md:text-sm line-clamp-2 drop-shadow">{{ ad.description }}</p>
+                  </div>
+                </div>
+              </NuxtLink>
+            </div>
+          </div>
+          
+          <!-- Gradient Overlay for depth -->
+          <div class="absolute inset-0 pointer-events-none bg-gradient-to-r from-white/20 via-transparent to-white/20 dark:from-gray-900/20 dark:via-transparent dark:to-gray-900/20" />
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="flex justify-center py-3 space-x-1.5">
+          <button
+            v-for="(ad, index) in activeAds"
+            :key="ad.id"
+            @click="goToSlide(index)"
+            class="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all duration-300 hover:scale-110"
+            :class="currentIndex === index ? 'bg-blue-600 dark:bg-blue-400 scale-125 shadow-lg shadow-blue-500/50' : 'bg-blue-600/30 dark:bg-blue-400/30 hover:bg-blue-600/60 dark:hover:bg-blue-400/60'"
+          />
+        </div>
+      </div>
+    </section>
+
     <!-- Trending Products Carousel -->
-    <section class="py-8 bg-white dark:bg-gray-900">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-6">
+    <section class="py-4 md:py-6 bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 md:mb-6 gap-3">
           <div>
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔥 Trending Now</h2>
-            <p class="text-gray-600 dark:text-gray-300">Most popular products this week</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2">🔥 Trending Now</h2>
+            <p class="text-sm md:text-base text-gray-600 dark:text-gray-300">Most popular products this week</p>
           </div>
           <div class="flex space-x-2">
             <button
               @click="scrollCarousel('left')"
-              class="p-3 bg-white dark:bg-gray-700 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+              class="p-2 md:p-3 bg-white dark:bg-gray-700 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
             >
-              <Icon name="heroicons:chevron-left" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
+              <Icon name="heroicons:chevron-left" class="w-5 h-5 md:w-6 md:h-6 text-gray-700 dark:text-gray-200" />
             </button>
             <button
               @click="scrollCarousel('right')"
-              class="p-3 bg-white dark:bg-gray-700 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+              class="p-2 md:p-3 bg-white dark:bg-gray-700 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
             >
-              <Icon name="heroicons:chevron-right" class="w-6 h-6 text-gray-700 dark:text-gray-200" />
+              <Icon name="heroicons:chevron-right" class="w-5 h-5 md:w-6 md:h-6 text-gray-700 dark:text-gray-200" />
             </button>
           </div>
         </div>
@@ -27,46 +74,47 @@
         <!-- Carousel Container -->
         <div
           ref="carouselRef"
-          class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+          class="flex space-x-3 md:space-x-6 overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
           style="scrollbar-width: none; -ms-overflow-style: none;"
         >
           <div
             v-for="product in trendingProducts"
             :key="product.id"
-            class="flex-shrink-0 w-72"
+            class="flex-shrink-0 w-56 sm:w-64 md:w-72"
           >
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
               <!-- Product Image -->
-              <div class="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
+              <div class="relative h-40 md:h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
                 <img
                   :src="product.image"
                   :alt="product.name"
                   class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
                 />
-                <div class="absolute top-3 left-3">
-                  <span class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold animate-pulse">
+                <div class="absolute top-2 md:top-3 left-2 md:left-3">
+                  <span class="bg-red-500 text-white px-1.5 md:px-2 py-0.5 md:py-1 rounded-full text-xs font-semibold animate-pulse">
                     TRENDING
                   </span>
                 </div>
-                <div class="absolute top-3 right-3">
+                <div class="absolute top-2 md:top-3 right-2 md:right-3">
                   <button
                     @click="cartStore.addItem(product)"
-                    class="bg-white dark:bg-gray-800 p-2 rounded-full shadow-lg hover:bg-blue-600 dark:hover:bg-blue-600 transition-colors duration-300"
+                    class="bg-white dark:bg-gray-800 p-1.5 md:p-2 rounded-full shadow-lg hover:bg-blue-600 dark:hover:bg-blue-600 transition-colors duration-300"
                   >
-                    <Icon name="heroicons:shopping-cart" class="w-4 h-4 text-gray-600 dark:text-gray-300 hover:text-white" />
+                    <Icon name="heroicons:shopping-cart" class="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-600 dark:text-gray-300 hover:text-white" />
                   </button>
                 </div>
               </div>
 
               <!-- Product Info -->
-              <div class="p-4">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-sm mb-3 line-clamp-2">{{ product.description }}</p>
+              <div class="p-3 md:p-4">
+                <h3 class="text-sm md:text-lg font-bold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-xs md:text-sm mb-2 md:mb-3 line-clamp-2">{{ product.description }}</p>
                 <div class="flex items-center justify-between">
-                  <span class="text-xl font-bold text-blue-600 dark:text-blue-400">${{ product.price }}</span>
+                  <span class="text-base md:text-xl font-bold text-blue-600 dark:text-blue-400">${{ product.price }}</span>
                   <NuxtLink
                     :to="`/product/${product.id}`"
-                    class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+                    class="text-xs md:text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
                   >
                     View Details
                   </NuxtLink>
@@ -79,44 +127,45 @@
     </section>
 
     <!-- Hot Sale - Audio Gadgets -->
-    <section class="py-8 bg-gray-50 dark:bg-gray-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-6">
+    <section class="py-4 md:py-6 bg-gray-50 dark:bg-gray-800">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 md:mb-6 gap-3">
           <div>
-            <div class="flex items-center space-x-3 mb-2">
-              <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">HOT SALE</span>
-              <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Audio Gadgets</h2>
+            <div class="flex items-center space-x-2 md:space-x-3 mb-1 md:mb-2">
+              <span class="bg-red-500 text-white px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs md:text-sm font-bold">HOT SALE</span>
+              <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Audio Gadgets</h2>
             </div>
-            <p class="text-gray-600 dark:text-gray-300">Limited time offers on audio equipment</p>
+            <p class="text-sm md:text-base text-gray-600 dark:text-gray-300">Limited time offers on audio equipment</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
           <div
             v-for="product in hotSaleAudioGadgets"
             :key="product.id"
             class="group"
           >
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
               <!-- Product Image -->
-              <div class="relative h-32 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
+              <div class="relative h-28 md:h-32 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
                 <img
                   :src="product.image"
                   :alt="product.name"
                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
                 />
-                <div class="absolute top-2 left-2">
-                  <span class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                <div class="absolute top-1.5 md:top-2 left-1.5 md:left-2">
+                  <span class="bg-orange-500 text-white px-1.5 md:px-2 py-0.5 rounded-full text-xs font-bold">
                     -{{ product.discount }}%
                   </span>
                 </div>
               </div>
 
               <!-- Product Info -->
-              <div class="p-3">
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
-                <div class="flex items-center space-x-2">
-                  <span class="text-base font-bold text-red-500">${{ product.salePrice }}</span>
+              <div class="p-2 md:p-3">
+                <h3 class="text-xs md:text-sm font-semibold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
+                <div class="flex items-center space-x-1 md:space-x-2">
+                  <span class="text-sm md:text-base font-bold text-red-500">${{ product.salePrice }}</span>
                   <span class="text-xs text-gray-400 line-through">${{ product.price }}</span>
                 </div>
               </div>
@@ -127,44 +176,45 @@
     </section>
 
     <!-- Hot Sale - Musical Gadgets -->
-    <section class="py-8 bg-white dark:bg-gray-900">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-6">
+    <section class="py-4 md:py-6 bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 md:mb-6 gap-3">
           <div>
-            <div class="flex items-center space-x-3 mb-2">
-              <span class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">HOT SALE</span>
-              <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Musical Gadgets</h2>
+            <div class="flex items-center space-x-2 md:space-x-3 mb-1 md:mb-2">
+              <span class="bg-red-500 text-white px-2 md:px-3 py-0.5 md:py-1 rounded-full text-xs md:text-sm font-bold">HOT SALE</span>
+              <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Musical Gadgets</h2>
             </div>
-            <p class="text-gray-600 dark:text-gray-300">Limited time offers on musical instruments</p>
+            <p class="text-sm md:text-base text-gray-600 dark:text-gray-300">Limited time offers on musical instruments</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
           <div
             v-for="product in hotSaleMusicalGadgets"
             :key="product.id"
             class="group"
           >
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
               <!-- Product Image -->
-              <div class="relative h-32 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
+              <div class="relative h-28 md:h-32 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
                 <img
                   :src="product.image"
                   :alt="product.name"
                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
                 />
-                <div class="absolute top-2 left-2">
-                  <span class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-xs font-bold">
+                <div class="absolute top-1.5 md:top-2 left-1.5 md:left-2">
+                  <span class="bg-orange-500 text-white px-1.5 md:px-2 py-0.5 rounded-full text-xs font-bold">
                     -{{ product.discount }}%
                   </span>
                 </div>
               </div>
 
               <!-- Product Info -->
-              <div class="p-3">
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
-                <div class="flex items-center space-x-2">
-                  <span class="text-base font-bold text-red-500">${{ product.salePrice }}</span>
+              <div class="p-2 md:p-3">
+                <h3 class="text-xs md:text-sm font-semibold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
+                <div class="flex items-center space-x-1 md:space-x-2">
+                  <span class="text-sm md:text-base font-bold text-red-500">${{ product.salePrice }}</span>
                   <span class="text-xs text-gray-400 line-through">${{ product.price }}</span>
                 </div>
               </div>
@@ -175,69 +225,70 @@
     </section>
 
     <!-- All Products Section -->
-    <section class="py-8 bg-gray-50 dark:bg-gray-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-6">
+    <section class="py-4 md:py-6 bg-gray-50 dark:bg-gray-800">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 md:mb-6 gap-3">
           <div>
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">All Products</h2>
-            <p class="text-gray-600 dark:text-gray-300">Browse our complete collection</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2">All Products</h2>
+            <p class="text-sm md:text-base text-gray-600 dark:text-gray-300">Browse our complete collection</p>
           </div>
           <!-- Search Bar in Section Header -->
-          <div class="relative hidden md:block">
+          <div class="relative w-full sm:w-auto">
             <Icon name="heroicons:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               v-model="searchQuery"
               type="text"
               placeholder="Search products..."
-              class="pl-9 pr-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all w-64"
+              class="pl-9 pr-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all w-full sm:w-64"
             />
           </div>
         </div>
 
         <!-- Products Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
           <div
             v-for="product in filteredProducts"
             :key="product.id"
             class="group"
           >
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
               <!-- Product Image -->
-              <div class="relative h-36 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
+              <div class="relative h-32 md:h-36 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
                 <img
                   :src="product.image"
                   :alt="product.name"
                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
                 />
-                <div class="absolute top-2 right-2 flex space-x-1">
+                <div class="absolute top-1.5 md:top-2 right-1.5 md:right-2 flex space-x-1">
                   <button
                     @click="cartStore.addItem(product)"
-                    class="bg-white dark:bg-gray-800 p-1.5 rounded-full shadow-md hover:bg-blue-600 dark:hover:bg-blue-600 transition-colors duration-300"
+                    class="bg-white dark:bg-gray-800 p-1 md:p-1.5 rounded-full shadow-md hover:bg-blue-600 dark:hover:bg-blue-600 transition-colors duration-300"
                   >
-                    <Icon name="heroicons:shopping-cart" class="w-3.5 h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
+                    <Icon name="heroicons:shopping-cart" class="w-3 md:w-3.5 h-3 md:h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
                   </button>
-                  <button class="bg-white dark:bg-gray-800 p-1.5 rounded-full shadow-md hover:bg-red-500 transition-colors duration-300">
-                    <Icon name="heroicons:heart" class="w-3.5 h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
+                  <button class="bg-white dark:bg-gray-800 p-1 md:p-1.5 rounded-full shadow-md hover:bg-red-500 transition-colors duration-300">
+                    <Icon name="heroicons:heart" class="w-3 md:w-3.5 h-3 md:h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
                   </button>
                 </div>
-                <div class="absolute bottom-2 left-2">
-                  <span class="bg-blue-600 text-white px-1.5 py-0.5 rounded-full text-xs font-medium">
+                <div class="absolute bottom-1.5 md:bottom-2 left-1.5 md:left-2">
+                  <span class="bg-blue-600 text-white px-1 md:px-1.5 py-0.5 rounded-full text-xs font-medium">
                     {{ getCategoryName(product.category) }}
                   </span>
                 </div>
               </div>
 
               <!-- Product Info -->
-              <div class="p-3">
-                <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
-                <p class="text-gray-600 dark:text-gray-300 text-xs mb-2 line-clamp-1">{{ product.description }}</p>
+              <div class="p-2 md:p-3">
+                <h3 class="text-xs md:text-sm font-bold text-gray-900 dark:text-white mb-1 truncate">{{ product.name }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-xs mb-1 md:mb-2 line-clamp-1">{{ product.description }}</p>
                 
                 <!-- Features -->
-                <div class="flex flex-wrap gap-1 mb-2">
+                <div class="flex flex-wrap gap-1 mb-1 md:mb-2">
                   <span
                     v-for="(feature, index) in product.features.slice(0, 1)"
                     :key="index"
-                    class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1.5 py-0.5 rounded"
+                    class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-1 md:px-1.5 py-0.5 rounded"
                   >
                     {{ feature }}
                   </span>
@@ -246,11 +297,11 @@
                 <!-- Price and Stock -->
                 <div class="flex items-center justify-between">
                   <div>
-                    <span class="text-base font-bold text-blue-600 dark:text-blue-400">${{ product.price }}</span>
+                    <span class="text-sm md:text-base font-bold text-blue-600 dark:text-blue-400">${{ product.price }}</span>
                   </div>
                   <NuxtLink
                     :to="`/product/${product.id}`"
-                    class="text-xs bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition-colors"
+                    class="text-xs bg-blue-600 text-white px-1.5 md:px-2 py-1 rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     View
                   </NuxtLink>
@@ -261,9 +312,9 @@
         </div>
 
         <!-- Empty State -->
-        <div v-if="filteredProducts.length === 0" class="text-center py-12">
-          <Icon name="heroicons:inbox" class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <p class="text-gray-600 dark:text-gray-300 text-lg">No products found in this category</p>
+        <div v-if="filteredProducts.length === 0" class="text-center py-8 md:py-12">
+          <Icon name="heroicons:inbox" class="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-4" />
+          <p class="text-gray-600 dark:text-gray-300 text-base md:text-lg">No products found in this category</p>
         </div>
       </div>
     </section>
@@ -273,32 +324,106 @@
 <script setup>
 import { useProductStore } from '~/stores/products'
 import { useCartStore } from '~/stores/cart'
+import { useAdsStore } from '~/stores/ads'
 import { useTheme } from '~/composables/useTheme'
 
 const productStore = useProductStore()
 const cartStore = useCartStore()
+const adsStore = useAdsStore()
 const { initTheme } = useTheme()
 
 const carouselRef = ref(null)
 const searchQuery = ref('')
+const currentIndex = ref(0)
+const autoPlayInterval = ref(null)
 
 // Initialize theme
 onMounted(() => {
   initTheme()
+  startAutoPlay()
 })
 
-// Trending products (randomly selected for demo)
+onUnmounted(() => {
+  stopAutoPlay()
+})
+
+// Ads carousel logic
+const activeAds = computed(() => adsStore.activeAds)
+
+const displayAds = computed(() => {
+  const ads = activeAds.value
+  if (ads.length === 0) return []
+  
+  // Get 3 ads for display: previous, current, next
+  const prevIndex = (currentIndex.value - 1 + ads.length) % ads.length
+  const nextIndex = (currentIndex.value + 1) % ads.length
+  
+  return [ads[prevIndex], ads[currentIndex.value], ads[nextIndex]]
+})
+
+const getAdClass = (index) => {
+  // Center ad (index 1) - 50% width, full height, fully visible with shadow
+  if (index === 1) {
+    return 'opacity-100 scale-100 z-30 left-1/2 -translate-x-1/2 w-1/2 h-full shadow-2xl'
+  }
+  // Left ad (index 0) - 50% width, overlapping on left side with reduced blur
+  else if (index === 0) {
+    return 'opacity-70 scale-95 z-20 left-0 w-1/2 h-full blur-[0.5px]'
+  }
+  // Right ad (index 2) - 50% width, overlapping on right side with reduced blur
+  else if (index === 2) {
+    return 'opacity-70 scale-95 z-20 left-1/2 w-1/2 h-full blur-[0.5px]'
+  }
+}
+
+const nextSlide = () => {
+  currentIndex.value = (currentIndex.value + 1) % activeAds.value.length
+  resetAutoPlay()
+}
+
+const prevSlide = () => {
+  currentIndex.value = (currentIndex.value - 1 + activeAds.value.length) % activeAds.value.length
+  resetAutoPlay()
+}
+
+const goToSlide = (index) => {
+  currentIndex.value = index
+  resetAutoPlay()
+}
+
+const handleAdClick = (ad) => {
+  adsStore.incrementView(ad.id)
+}
+
+const startAutoPlay = () => {
+  if (activeAds.value.length > 1) {
+    autoPlayInterval.value = setInterval(() => {
+      nextSlide()
+    }, 5000)
+  }
+}
+
+const stopAutoPlay = () => {
+  if (autoPlayInterval.value) {
+    clearInterval(autoPlayInterval.value)
+    autoPlayInterval.value = null
+  }
+}
+
+const resetAutoPlay = () => {
+  stopAutoPlay()
+  startAutoPlay()
+}
+
+// Trending products
 const trendingProducts = computed(() => {
-  return productStore.products.slice(0, 5).map(product => ({
-    ...product,
-    discount: Math.floor(Math.random() * 20) + 10
-  }))
+  return productStore.products.filter(product => product.trending)
 })
 
 // Hot sale - Audio Gadgets
 const hotSaleAudioGadgets = computed(() => {
   return productStore.products
-    .filter(product => product.category === 'audio-gadgets' && product.discount > 0)
+    .filter(product => product.category === 'audio-gadgets' && product.hotSale)
     .map(product => ({
       ...product,
       salePrice: product.salePrice || (product.price * (1 - (product.discount || 0) / 100)).toFixed(2)
@@ -308,7 +433,7 @@ const hotSaleAudioGadgets = computed(() => {
 // Hot sale - Musical Gadgets
 const hotSaleMusicalGadgets = computed(() => {
   return productStore.products
-    .filter(product => product.category === 'musical-gadgets' && product.discount > 0)
+    .filter(product => product.category === 'musical-gadgets' && product.hotSale)
     .map(product => ({
       ...product,
       salePrice: product.salePrice || (product.price * (1 - (product.discount || 0) / 100)).toFixed(2)

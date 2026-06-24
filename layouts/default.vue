@@ -2,36 +2,36 @@
   <div class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
     <!-- Navigation -->
     <nav class="bg-white dark:bg-gray-800 shadow-lg dark:shadow-gray-900/50 border-b border-transparent dark:border-gray-700 fixed top-0 left-0 right-0 z-40 transition-colors duration-300">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-14 md:h-16">
           <!-- Logo -->
           <NuxtLink to="/" class="flex items-center space-x-2">
-            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Icon name="heroicons:microphone" class="w-6 h-6 text-white" />
+            <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+              <Icon name="heroicons:microphone" class="w-4 h-4 md:w-6 md:h-6 text-white" />
             </div>
-            <span class="text-xl font-bold text-gray-800">PulseTunez</span>
+            <span class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200">PulseTunez</span>
           </NuxtLink>
 
           <!-- Desktop Navigation -->
-          <div class="hidden md:flex items-center space-x-8">
+          <div class="hidden lg:flex items-center space-x-6">
             <NuxtLink 
               to="/" 
-              class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
-              :class="{ 'text-blue-600 font-bold': $route.path === '/' }"
+              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-sm"
+              :class="{ 'text-blue-600 dark:text-blue-400 font-bold': $route.path === '/' }"
             >
               Home
             </NuxtLink>
             <NuxtLink 
               to="/shop" 
-              class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
-              :class="{ 'text-blue-600 font-bold': $route.path === '/shop' }"
+              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-sm"
+              :class="{ 'text-blue-600 dark:text-blue-400 font-bold': $route.path === '/shop' }"
             >
               Shop
             </NuxtLink>
             
             <!-- Category Dropdown -->
             <div class="relative group">
-              <button class="text-gray-600 hover:text-blue-600 transition-colors font-medium flex items-center">
+              <button class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-sm flex items-center">
                 Category
                 <Icon name="heroicons:chevron-down" class="w-4 h-4 ml-1" />
               </button>
@@ -41,7 +41,7 @@
                     v-for="category in productStore.categories" 
                     :key="category.id"
                     :to="`/category/${category.id}`"
-                    class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-sm"
                     :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20': $route.path.startsWith(`/category/${category.id}`) }"
                   >
                     {{ category.name }}
@@ -52,38 +52,38 @@
             
             <NuxtLink 
               to="/about" 
-              class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
-              :class="{ 'text-blue-600 font-bold': $route.path === '/about' }"
+              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-sm"
+              :class="{ 'text-blue-600 dark:text-blue-400 font-bold': $route.path === '/about' }"
             >
               About
             </NuxtLink>
             <NuxtLink 
               to="/contact" 
-              class="text-gray-600 hover:text-blue-600 transition-colors font-medium"
-              :class="{ 'text-blue-600 font-bold': $route.path === '/contact' }"
+              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-sm"
+              :class="{ 'text-blue-600 dark:text-blue-400 font-bold': $route.path === '/contact' }"
             >
               Contact
             </NuxtLink>
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-2 md:space-x-4">
             <!-- Show when NOT signed in -->
             <template v-if="!authStore.isAuthenticated">
               <!-- Login Button -->
               <NuxtLink 
                 to="/login" 
-                class="hidden sm:inline-flex items-center px-4 py-2 text-gray-600 hover:text-blue-600 font-medium transition-colors"
-                :class="{ 'text-blue-600': $route.path === '/login' }"
+                class="hidden md:inline-flex items-center px-3 md:px-4 py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors text-sm"
+                :class="{ 'text-blue-600 dark:text-blue-400': $route.path === '/login' }"
               >
-                <Icon name="heroicons:user" class="w-5 h-5 mr-1" />
+                <Icon name="heroicons:user" class="w-4 h-4 md:w-5 md:h-5 mr-1" />
                 <span>Sign In</span>
               </NuxtLink>
               
               <!-- Register Button -->
               <NuxtLink 
                 to="/register" 
-                class="hidden sm:inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                class="hidden md:inline-flex items-center px-3 md:px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors text-sm"
                 :class="{ 'bg-blue-700': $route.path === '/register' }"
               >
                 Sign Up
@@ -95,21 +95,21 @@
               <!-- User Icon -->
               <NuxtLink 
                 to="/settings" 
-                class="p-2 text-gray-600 hover:text-blue-600 transition-colors"
-                :class="{ 'text-blue-600': $route.path === '/settings' }"
+                class="p-1.5 md:p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                :class="{ 'text-blue-600 dark:text-blue-400': $route.path === '/settings' }"
               >
-                <Icon name="heroicons:user-circle" class="w-7 h-7" />
+                <Icon name="heroicons:user-circle" class="w-5 h-5 md:w-7 md:h-7" />
               </NuxtLink>
               
               <!-- Cart Button (only when signed in) -->
               <button 
                 @click="cartStore.toggleCart"
-                class="relative p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                class="relative p-1.5 md:p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
-                <Icon name="heroicons:shopping-cart" class="w-6 h-6" />
+                <Icon name="heroicons:shopping-cart" class="w-5 h-5 md:w-6 md:h-6" />
                 <span 
                   v-if="cartStore.items.length > 0"
-                  class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                  class="absolute -top-0.5 -right-0.5 bg-blue-600 text-white text-xs rounded-full w-4 h-4 md:w-5 md:h-5 flex items-center justify-center"
                 >
                   {{ cartStore.items.length }}
                 </span>
@@ -119,115 +119,142 @@
             <!-- Mobile Menu Toggle -->
             <button 
               @click="mobileMenuOpen = !mobileMenuOpen"
-              class="md:hidden p-2 text-gray-600 hover:text-blue-600 transition-colors"
+              class="lg:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              aria-label="Toggle menu"
             >
-              <Icon name="heroicons:bars-3" class="w-6 h-6" />
+              <Icon :name="mobileMenuOpen ? 'heroicons:x-mark' : 'heroicons:bars-3'" class="w-6 h-6" />
             </button>
           </div>
         </div>
       </div>
 
       <!-- Mobile Menu -->
-      <div v-if="mobileMenuOpen" class="md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-        <div class="px-4 py-2 space-y-2">
-          <NuxtLink 
-            to="/" 
-            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            :class="{ 'text-blue-600 font-bold': $route.path === '/' }"
-            @click="mobileMenuOpen = false"
-          >
-            Home
-          </NuxtLink>
-          <NuxtLink 
-            to="/shop" 
-            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            :class="{ 'text-blue-600 font-bold': $route.path === '/shop' }"
-            @click="mobileMenuOpen = false"
-          >
-            Shop
-          </NuxtLink>
-          
-          <!-- Mobile Category Dropdown -->
-          <div>
-            <button 
-              @click="categoryDropdownOpen = !categoryDropdownOpen"
-              class="w-full flex items-center justify-between py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
-            >
-              Category
-              <Icon :name="categoryDropdownOpen ? 'heroicons:chevron-up' : 'heroicons:chevron-down'" class="w-4 h-4" />
-            </button>
-            <div v-if="categoryDropdownOpen" class="pl-4 space-y-1 mt-2">
-              <NuxtLink 
-                v-for="category in productStore.categories" 
-                :key="category.id"
-                :to="`/category/${category.id}`"
-                class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                :class="{ 'text-blue-600 font-bold': $route.path.startsWith(`/category/${category.id}`) }"
-                @click="mobileMenuOpen = false"
-              >
-                {{ category.name }}
-              </NuxtLink>
-            </div>
-          </div>
-          
-          <NuxtLink 
-            to="/about" 
-            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            :class="{ 'text-blue-600 font-bold': $route.path === '/about' }"
-            @click="mobileMenuOpen = false"
-          >
-            About
-          </NuxtLink>
-          <NuxtLink 
-            to="/contact" 
-            class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-            :class="{ 'text-blue-600 font-bold': $route.path === '/contact' }"
-            @click="mobileMenuOpen = false"
-          >
-            Contact
-          </NuxtLink>
-          <!-- Show when signed in -->
-          <template v-if="authStore.isAuthenticated">
+      <Transition
+        enter-active-class="transition-all duration-300 ease-out"
+        enter-from-class="max-h-0 opacity-0"
+        enter-to-class="max-h-screen opacity-100"
+        leave-active-class="transition-all duration-300 ease-in"
+        leave-from-class="max-h-screen opacity-100"
+        leave-to-class="max-h-0 opacity-0"
+      >
+        <div v-if="mobileMenuOpen" class="lg:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div class="px-3 sm:px-4 py-4 space-y-2">
             <NuxtLink 
-              to="/settings" 
-              class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              :class="{ 'text-blue-600 font-bold': $route.path === '/settings' }"
+              to="/" 
+              class="flex items-center py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
+              :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold': $route.path === '/' }"
               @click="mobileMenuOpen = false"
             >
-              <div class="flex items-center">
-                <Icon name="heroicons:user-circle" class="w-5 h-5 mr-2" />
-                My Account
-              </div>
+              <Icon name="heroicons:home" class="w-5 h-5 mr-3" />
+              Home
             </NuxtLink>
-          </template>
-          
-          <!-- Show when NOT signed in -->
-          <template v-else>
-            <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4 space-y-2">
-              <NuxtLink 
-                to="/login" 
-                class="block py-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
-                :class="{ 'text-blue-600 font-bold': $route.path === '/login' }"
-                @click="mobileMenuOpen = false"
+            <NuxtLink 
+              to="/shop" 
+              class="flex items-center py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
+              :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold': $route.path === '/shop' }"
+              @click="mobileMenuOpen = false"
+            >
+              <Icon name="heroicons:shopping-bag" class="w-5 h-5 mr-3" />
+              Shop
+            </NuxtLink>
+            
+            <!-- Mobile Category Dropdown -->
+            <div>
+              <button 
+                @click="categoryDropdownOpen = !categoryDropdownOpen"
+                class="w-full flex items-center justify-between py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors font-medium"
               >
-                Sign In
-              </NuxtLink>
-              <NuxtLink 
-                to="/register" 
-                class="block py-2 px-4 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors text-center"
-                :class="{ 'bg-blue-700': $route.path === '/register' }"
-                @click="mobileMenuOpen = false"
+                <div class="flex items-center">
+                  <Icon name="heroicons:cube" class="w-5 h-5 mr-3" />
+                  Category
+                </div>
+                <Icon :name="categoryDropdownOpen ? 'heroicons:chevron-up' : 'heroicons:chevron-down'" class="w-4 h-4" />
+              </button>
+              <Transition
+                enter-active-class="transition-all duration-200 ease-out"
+                enter-from-class="max-h-0 opacity-0"
+                enter-to-class="max-h-96 opacity-100"
+                leave-active-class="transition-all duration-200 ease-in"
+                leave-from-class="max-h-96 opacity-100"
+                leave-to-class="max-h-0 opacity-0"
               >
-                Sign Up
-              </NuxtLink>
+                <div v-if="categoryDropdownOpen" class="pl-11 pr-3 space-y-1 overflow-hidden">
+                  <NuxtLink 
+                    v-for="category in productStore.categories" 
+                    :key="category.id"
+                    :to="`/category/${category.id}`"
+                    class="block py-2 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors text-sm"
+                    :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold': $route.path.startsWith(`/category/${category.id}`) }"
+                    @click="mobileMenuOpen = false"
+                  >
+                    {{ category.name }}
+                  </NuxtLink>
+                </div>
+              </Transition>
             </div>
-          </template>
+            
+            <NuxtLink 
+              to="/about" 
+              class="flex items-center py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
+              :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold': $route.path === '/about' }"
+              @click="mobileMenuOpen = false"
+            >
+              <Icon name="heroicons:information-circle" class="w-5 h-5 mr-3" />
+              About
+            </NuxtLink>
+            <NuxtLink 
+              to="/contact" 
+              class="flex items-center py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
+              :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold': $route.path === '/contact' }"
+              @click="mobileMenuOpen = false"
+            >
+              <Icon name="heroicons:envelope" class="w-5 h-5 mr-3" />
+              Contact
+            </NuxtLink>
+            
+            <!-- Mobile Auth Buttons -->
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4 space-y-2">
+              <!-- Show when signed in -->
+              <template v-if="authStore.isAuthenticated">
+                <NuxtLink 
+                  to="/settings" 
+                  class="flex items-center py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
+                  :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold': $route.path === '/settings' }"
+                  @click="mobileMenuOpen = false"
+                >
+                  <Icon name="heroicons:user-circle" class="w-5 h-5 mr-3" />
+                  My Account
+                </NuxtLink>
+              </template>
+              
+              <!-- Show when NOT signed in -->
+              <template v-else>
+                <NuxtLink 
+                  to="/login" 
+                  class="flex items-center py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors font-medium"
+                  :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold': $route.path === '/login' }"
+                  @click="mobileMenuOpen = false"
+                >
+                  <Icon name="heroicons:user" class="w-5 h-5 mr-3" />
+                  Sign In
+                </NuxtLink>
+                <NuxtLink 
+                  to="/register" 
+                  class="flex items-center justify-center py-3 px-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                  :class="{ 'bg-blue-700': $route.path === '/register' }"
+                  @click="mobileMenuOpen = false"
+                >
+                  Sign Up
+                </NuxtLink>
+              </template>
+            </div>
+          </div>
         </div>
-      </div>
+      </Transition>
     </nav>
 
     <!-- Main Content -->
-    <main class="pt-16 bg-white dark:bg-gray-900 relative z-10">
+    <main class="pt-14 md:pt-16 bg-white dark:bg-gray-900 relative z-10">
       <slot />
     </main>
 
