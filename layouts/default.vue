@@ -15,13 +15,6 @@
           <!-- Desktop Navigation -->
           <div class="hidden lg:flex items-center space-x-6">
             <NuxtLink 
-              to="/" 
-              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-sm"
-              :class="{ 'text-blue-600 dark:text-blue-400 font-bold': $route.path === '/' }"
-            >
-              Home
-            </NuxtLink>
-            <NuxtLink 
               to="/shop" 
               class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium text-sm"
               :class="{ 'text-blue-600 dark:text-blue-400 font-bold': $route.path === '/shop' }"
@@ -68,6 +61,17 @@
 
           <!-- Action Buttons -->
           <div class="flex items-center space-x-2 md:space-x-4">
+            <!-- Search Button -->
+            <div class="relative">
+              <button
+                @click="searchOpen = !searchOpen"
+                class="p-1.5 md:p-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                <Icon name="heroicons:magnifying-glass" class="w-5 h-5 md:w-6 md:h-6" />
+              </button>
+              <SearchModal :is-open="searchOpen" @close="searchOpen = false" />
+            </div>
+
             <!-- Show when NOT signed in -->
             <template v-if="!authStore.isAuthenticated">
               <!-- Login Button -->
@@ -139,15 +143,6 @@
       >
         <div v-if="mobileMenuOpen" class="lg:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 overflow-hidden">
           <div class="px-3 sm:px-4 py-4 space-y-2">
-            <NuxtLink 
-              to="/" 
-              class="flex items-center py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
-              :class="{ 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-bold': $route.path === '/' }"
-              @click="mobileMenuOpen = false"
-            >
-              <Icon name="heroicons:home" class="w-5 h-5 mr-3" />
-              Home
-            </NuxtLink>
             <NuxtLink 
               to="/shop" 
               class="flex items-center py-3 px-3 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
@@ -341,6 +336,50 @@
             Proceed to Checkout
           </NuxtLink>
         </div>
+
+        <!-- Wishlist Section -->
+        <div class="border-t border-gray-200 dark:border-gray-700 p-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold text-gray-900 dark:text-white flex items-center">
+              <Icon name="heroicons:heart" class="w-4 h-4 mr-2 text-red-500" />
+              Wishlist ({{ wishlistStore.itemCount }})
+            </h3>
+            <NuxtLink 
+              to="/wishlist"
+              @click="cartStore.closeCart"
+              class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+            >
+              View All
+            </NuxtLink>
+          </div>
+          <div v-if="wishlistStore.items.length === 0" class="text-center py-4 text-sm text-gray-500 dark:text-gray-400">
+            Your wishlist is empty
+          </div>
+          <div v-else class="space-y-2 max-h-40 overflow-y-auto">
+            <div 
+              v-for="item in wishlistStore.items.slice(0, 3)" 
+              :key="item.id"
+              class="flex items-center space-x-2 bg-gray-50 dark:bg-gray-700/50 p-2 rounded-lg"
+            >
+              <img 
+                :src="item.image" 
+                :alt="item.name"
+                class="w-10 h-10 object-cover rounded"
+              >
+              <div class="flex-1 min-w-0">
+                <h4 class="text-xs font-medium text-gray-900 dark:text-white truncate">{{ item.name }}</h4>
+                <p class="text-xs text-blue-600 font-semibold">${{ item.price }}</p>
+              </div>
+              <button 
+                @click="cartStore.addItem(item); wishlistStore.removeItem(item.id)"
+                class="p-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                title="Add to cart"
+              >
+                <Icon name="heroicons:shopping-cart" class="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </Transition>
 
@@ -460,15 +499,19 @@
 import { useProductStore } from '~/stores/products'
 import { useCartStore } from '~/stores/cart'
 import { useAuthStore } from '~/stores/auth'
+import { useWishlistStore } from '~/stores/wishlist'
 
 const productStore = useProductStore()
 const cartStore = useCartStore()
 const authStore = useAuthStore()
+const wishlistStore = useWishlistStore()
 const mobileMenuOpen = ref(false)
 const categoryDropdownOpen = ref(false)
+const searchOpen = ref(false)
 
-// Initialize auth on mount
+// Initialize auth and wishlist on mount
 onMounted(() => {
   authStore.initializeAuth()
+  wishlistStore.loadFromLocalStorage()
 })
 </script>

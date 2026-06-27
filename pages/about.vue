@@ -2,6 +2,12 @@
   <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 transition-colors duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Hero Section -->
+      <HeroSection />
+
+      <!-- Why Choose Us -->
+      <FeaturesSection />
+
+      <!-- About Content -->
       <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-12 mb-12">
         <div class="text-center">
           <h1 class="text-4xl font-bold mb-4">About PulseTunez</h1>
@@ -110,12 +116,38 @@
         </div>
       </div>
 
+      <!-- FAQs -->
+      <div class="mb-16">
+        <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+        <div class="max-w-3xl mx-auto space-y-4">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">What is your return policy?</h3>
+            <p class="text-gray-600 dark:text-gray-300">We offer a 30-day return policy for all products in their original condition. Contact our support team to initiate a return.</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Do you offer warranty on products?</h3>
+            <p class="text-gray-600 dark:text-gray-300">Yes, all our products come with manufacturer warranty. Warranty periods vary by product and brand.</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">How long does shipping take?</h3>
+            <p class="text-gray-600 dark:text-gray-300">Standard shipping takes 5-7 business days. Express shipping options are available for faster delivery.</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 border border-gray-200 dark:border-gray-700">
+            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Do you ship internationally?</h3>
+            <p class="text-gray-600 dark:text-gray-300">Currently, we ship within the country only. International shipping will be available soon.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ready to Upgrade Your Sound CTA -->
+      <CTASection />
+
       <!-- CTA -->
       <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg p-8 text-center">
         <h2 class="text-2xl font-bold mb-4">Ready to Experience the PulseTunez Difference?</h2>
         <p class="text-lg mb-6">Join thousands of satisfied customers who trust us for their audio needs.</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <NuxtLink to="/category/audio-gadgets" class="btn-primary bg-white text-blue-600 hover:bg-gray-100">
+          <NuxtLink to="/shop" class="btn-primary bg-white text-blue-600 hover:bg-gray-100">
             Shop Now
           </NuxtLink>
           <NuxtLink to="/contact" class="btn-secondary border-2 border-white text-white hover:bg-white hover:text-blue-600">
@@ -128,6 +160,11 @@
 </template>
 
 <script setup>
+// Import components
+import HeroSection from '~/components/HeroSection.vue'
+import FeaturesSection from '~/components/FeaturesSection.vue'
+import CTASection from '~/components/CTASection.vue'
+
 // Set page title
 useHead({
   title: 'About Us - PulseTunez'

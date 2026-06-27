@@ -224,6 +224,63 @@
       </div>
     </section>
 
+    <!-- Recently Viewed -->
+    <section v-if="recentlyViewedStore.recentProducts.length > 0" class="py-4 md:py-6 bg-white dark:bg-gray-900">
+      <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 md:mb-6 gap-3">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2">Recently Viewed</h2>
+            <p class="text-sm md:text-base text-gray-600 dark:text-gray-300">Products you've looked at recently</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
+          <div 
+            v-for="recentProduct in recentlyViewedStore.recentProducts" 
+            :key="recentProduct.id"
+            class="group"
+          >
+            <div class="bg-white dark:bg-gray-800 rounded-lg md:rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
+              <div class="relative h-28 md:h-32 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
+                <NuxtLink :to="`/product/${recentProduct.id}`">
+                  <img 
+                    :src="recentProduct.image" 
+                    :alt="recentProduct.name"
+                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </NuxtLink>
+                <div class="absolute top-1.5 md:top-2 right-1.5 md:right-2 flex space-x-1">
+                  <button
+                    @click="cartStore.addItem(recentProduct)"
+                    class="bg-white dark:bg-gray-800 p-1 md:p-1.5 rounded-full shadow-md hover:bg-blue-600 dark:hover:bg-blue-600 transition-colors duration-300"
+                  >
+                    <Icon name="heroicons:shopping-cart" class="w-3 md:w-3.5 h-3 md:h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
+                  </button>
+                  <button 
+                    @click="wishlistStore.toggleItem(recentProduct)"
+                    class="bg-white dark:bg-gray-800 p-1 md:p-1.5 rounded-full shadow-md hover:bg-red-500 transition-colors duration-300"
+                  >
+                    <Icon 
+                      :name="wishlistStore.isInWishlist(recentProduct.id) ? 'heroicons:heart-solid' : 'heroicons:heart'" 
+                      class="w-3 md:w-3.5 h-3 md:h-3.5 text-gray-600 dark:text-gray-300 hover:text-white"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div class="p-2 md:p-3">
+                <NuxtLink :to="`/product/${recentProduct.id}`">
+                  <h3 class="text-xs md:text-sm font-semibold text-gray-900 dark:text-white mb-1 truncate hover:text-blue-600 dark:hover:text-blue-400 transition-colors">{{ recentProduct.name }}</h3>
+                </NuxtLink>
+                <div class="flex items-center justify-between">
+                  <span class="text-sm md:text-base font-bold text-blue-600 dark:text-blue-400">${{ recentProduct.price }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- All Products Section -->
     <section class="py-4 md:py-6 bg-gray-50 dark:bg-gray-800">
       <div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
@@ -267,8 +324,14 @@
                   >
                     <Icon name="heroicons:shopping-cart" class="w-3 md:w-3.5 h-3 md:h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
                   </button>
-                  <button class="bg-white dark:bg-gray-800 p-1 md:p-1.5 rounded-full shadow-md hover:bg-red-500 transition-colors duration-300">
-                    <Icon name="heroicons:heart" class="w-3 md:w-3.5 h-3 md:h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
+                  <button 
+                    @click="wishlistStore.toggleItem(product)"
+                    class="bg-white dark:bg-gray-800 p-1 md:p-1.5 rounded-full shadow-md hover:bg-red-500 transition-colors duration-300"
+                  >
+                    <Icon 
+                      :name="wishlistStore.isInWishlist(product.id) ? 'heroicons:heart-solid' : 'heroicons:heart'" 
+                      class="w-3 md:w-3.5 h-3 md:h-3.5 text-gray-600 dark:text-gray-300 hover:text-white"
+                    />
                   </button>
                 </div>
                 <div class="absolute bottom-1.5 md:bottom-2 left-1.5 md:left-2">
@@ -325,11 +388,15 @@
 import { useProductStore } from '~/stores/products'
 import { useCartStore } from '~/stores/cart'
 import { useAdsStore } from '~/stores/ads'
+import { useWishlistStore } from '~/stores/wishlist'
+import { useRecentlyViewedStore } from '~/stores/recentlyViewed'
 import { useTheme } from '~/composables/useTheme'
 
 const productStore = useProductStore()
 const cartStore = useCartStore()
 const adsStore = useAdsStore()
+const wishlistStore = useWishlistStore()
+const recentlyViewedStore = useRecentlyViewedStore()
 const { initTheme } = useTheme()
 
 const carouselRef = ref(null)
@@ -341,6 +408,8 @@ const autoPlayInterval = ref(null)
 onMounted(() => {
   initTheme()
   startAutoPlay()
+  wishlistStore.loadFromLocalStorage()
+  recentlyViewedStore.loadFromLocalStorage()
 })
 
 onUnmounted(() => {
