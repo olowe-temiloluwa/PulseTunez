@@ -249,7 +249,7 @@
           </div>
           
           <div class="space-y-4">
-            <button class="w-full text-left px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <NuxtLink to="/profile" class="w-full text-left px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors block">
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <Icon name="heroicons:user" class="w-5 h-5 text-gray-500 dark:text-gray-400 mr-3" />
@@ -257,9 +257,9 @@
                 </div>
                 <Icon name="heroicons:chevron-right" class="w-5 h-5 text-gray-400" />
               </div>
-            </button>
+            </NuxtLink>
 
-            <button class="w-full text-left px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <NuxtLink to="/payment-methods" class="w-full text-left px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors block">
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <Icon name="heroicons:credit-card" class="w-5 h-5 text-gray-500 dark:text-gray-400 mr-3" />
@@ -267,9 +267,9 @@
                 </div>
                 <Icon name="heroicons:chevron-right" class="w-5 h-5 text-gray-400" />
               </div>
-            </button>
+            </NuxtLink>
 
-            <button class="w-full text-left px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <NuxtLink to="/shipping-addresses" class="w-full text-left px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors block">
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
                   <Icon name="heroicons:map-pin" class="w-5 h-5 text-gray-500 dark:text-gray-400 mr-3" />
@@ -277,7 +277,7 @@
                 </div>
                 <Icon name="heroicons:chevron-right" class="w-5 h-5 text-gray-400" />
               </div>
-            </button>
+            </NuxtLink>
 
             <button 
               @click="handleLogout"

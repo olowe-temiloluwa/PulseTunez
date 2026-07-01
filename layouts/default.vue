@@ -6,9 +6,7 @@
         <div class="flex justify-between items-center h-14 md:h-16">
           <!-- Logo -->
           <NuxtLink to="/" class="flex items-center space-x-2">
-            <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Icon name="heroicons:microphone" class="w-4 h-4 md:w-6 md:h-6 text-white" />
-            </div>
+            <img src="~/assets/css/img/Logo.png" alt="PulseTunez Logo" class="w-8 h-8 md:w-10 md:h-10 object-contain rounded-lg" />
             <span class="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200">PulseTunez</span>
           </NuxtLink>
 
@@ -396,9 +394,7 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div class="flex items-center space-x-2 mb-4">
-              <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Icon name="heroicons:microphone" class="w-6 h-6 text-white" />
-              </div>
+              <img src="~/assets/css/img/Logo.png" alt="PulseTunez Logo" class="w-10 h-10 object-contain rounded-lg" />
               <span class="text-lg font-bold footer-heading">PulseTunez</span>
             </div>
             <p class="footer-muted">Your premium destination for audio gadgets, musical instruments, and studio equipment.</p>
