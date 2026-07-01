@@ -33,11 +33,7 @@
         </button>
       </div>
 
-      <!-- Mobile Results -->
-      <div class="flex-1 overflow-y-auto p-4">
-        <div v-if="loading" class="text-center py-8 text-gray-500">
-          Searching...
-        </div>
+      
         <div v-else-if="searchResults.length === 0 && searchQuery" class="text-center py-8 text-gray-500">
           No products found
         </div>
