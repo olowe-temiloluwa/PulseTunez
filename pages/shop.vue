@@ -1,5 +1,55 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <!-- Ad Carousel -->
+    <section class="py-8 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative h-72 md:h-96 flex items-center justify-center">
+          <div
+            v-for="(ad, index) in ads"
+            :key="index"
+            class="absolute transition-all duration-700 ease-in-out"
+            :style="getAdStyle(index)"
+          >
+            <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden w-80 md:w-96 h-56 md:h-72">
+              <div class="flex flex-col h-full">
+                <div class="h-32 md:h-44">
+                  <img
+                    :src="ad.image"
+                    :alt="ad.title"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div class="p-4 flex flex-col justify-center flex-1">
+                  <span class="inline-block bg-red-500 text-white px-2 py-0.5 rounded-full text-xs font-bold mb-2 w-fit">
+                    {{ ad.badge }}
+                  </span>
+                  <h2 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-1">
+                    {{ ad.title }}
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 text-xs md:text-sm line-clamp-2">
+                    {{ ad.description }}
+                  </p>
+                  <button class="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors w-fit">
+                    Shop Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Auto-scroll indicators -->
+        <div class="flex justify-center mt-4 space-x-2">
+          <div
+            v-for="(ad, index) in ads"
+            :key="index"
+            class="w-3 h-3 rounded-full transition-all duration-300"
+            :class="index === currentAdIndex ? 'bg-white w-8' : 'bg-white/50'"
+          ></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Trending Products Carousel -->
     <section class="py-8 bg-white dark:bg-gray-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -281,10 +331,82 @@ const { initTheme } = useTheme()
 
 const carouselRef = ref(null)
 const searchQuery = ref('')
+const currentAdIndex = ref(0)
+let autoScrollInterval = null
 
-// Initialize theme
+// Ad carousel data
+const ads = [
+  {
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800',
+    badge: 'NEW ARRIVAL',
+    title: 'Premium Headphones Collection',
+    description: 'Experience crystal clear sound with our latest wireless headphones. Up to 30% off on selected models.'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800',
+    badge: 'LIMITED OFFER',
+    title: 'Studio Equipment Sale',
+    description: 'Professional audio gear at unbeatable prices. Perfect for home studios and professionals.'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=800',
+    badge: 'BEST SELLER',
+    title: 'Musical Instruments',
+    description: 'From guitars to keyboards, find everything you need to create beautiful music.'
+  }
+]
+
+// Get ad style for center/fading effect
+const getAdStyle = (index) => {
+  const diff = index - currentAdIndex.value
+  const absDiff = Math.abs(diff)
+  
+  if (absDiff === 0) {
+    // Center slide (active)
+    return {
+      transform: 'scale(1)',
+      opacity: '1',
+      zIndex: '10'
+    }
+  } else if (absDiff === 1) {
+    // Adjacent slides (half visible)
+    return {
+      transform: diff < 0 ? 'translateX(-60%) scale(0.85)' : 'translateX(60%) scale(0.85)',
+      opacity: '0.5',
+      zIndex: '5'
+    }
+  } else {
+    // Far slides (hidden)
+    return {
+      transform: diff < 0 ? 'translateX(-100%) scale(0.7)' : 'translateX(100%) scale(0.7)',
+      opacity: '0',
+      zIndex: '1'
+    }
+  }
+}
+
+// Auto-scroll ads
+const startAutoScroll = () => {
+  autoScrollInterval = setInterval(() => {
+    currentAdIndex.value = (currentAdIndex.value + 1) % ads.length
+  }, 4000)
+}
+
+const stopAutoScroll = () => {
+  if (autoScrollInterval) {
+    clearInterval(autoScrollInterval)
+    autoScrollInterval = null
+  }
+}
+
+// Initialize theme and auto-scroll
 onMounted(() => {
   initTheme()
+  startAutoScroll()
+})
+
+onUnmounted(() => {
+  stopAutoScroll()
 })
 
 // Trending products (randomly selected for demo)
