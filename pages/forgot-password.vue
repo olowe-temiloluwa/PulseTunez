@@ -10,7 +10,7 @@
       <!-- Logo and Branding -->
       <div class="text-center mb-8 animate-fade-in-down">
         <div class="inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-white/10 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-white/20 shadow-2xl mb-4">
-          <Icon name="heroicons:microphone" class="w-10 h-10 text-blue-600 dark:text-white" />
+          <img src="~/assets/css/img/Logo.png" alt="PulseTunez Logo" class="w-12 h-12 object-contain rounded-lg" />
         </div>
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Forgot Password?</h1>
         <p class="text-gray-600 dark:text-gray-300">No worries, we'll send you reset instructions</p>

@@ -247,6 +247,10 @@
 <script setup>
 import { useCartStore } from '~/stores/cart'
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 const cartStore = useCartStore()
 const isProcessing = ref(false)
 

@@ -1,79 +1,14 @@
 <template>
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-    <!-- Admin Header -->
-    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center">
-            <Icon name="heroicons:shield-check" class="w-8 h-8 text-blue-600 dark:text-blue-400 mr-3" />
-            <h1 class="text-xl font-bold text-gray-900 dark:text-white">Product Management</h1>
-          </div>
-          <div class="flex items-center space-x-4">
-            <button
-              @click="showAddModal = true"
-              class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
-            >
-              <Icon name="heroicons:plus" class="w-5 h-5 mr-2" />
-              Add Product
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="flex">
-      <!-- Sidebar -->
-      <aside class="w-64 bg-white dark:bg-gray-800 shadow-md min-h-screen">
-        <nav class="mt-8">
-          <div class="px-4 space-y-2">
-            <NuxtLink
-              to="/admin"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:chart-bar" class="w-5 h-5 mr-3" />
-              Dashboard
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/products"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700"
-            >
-              <Icon name="heroicons:cube" class="w-5 h-5 mr-3" />
-              Products
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/users"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:users" class="w-5 h-5 mr-3" />
-              Users
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/analytics"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:chart-pie" class="w-5 h-5 mr-3" />
-              Analytics
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/orders"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:shopping-bag" class="w-5 h-5 mr-3" />
-              Orders
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/settings"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:cog-6-tooth" class="w-5 h-5 mr-3" />
-              Settings
-            </NuxtLink>
-          </div>
-        </nav>
-      </aside>
-
-      <!-- Main Content -->
-      <main class="flex-1 p-8">
+  <div>
+    <div class="flex justify-end mb-6">
+      <button
+        @click="showAddModal = true"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
+      >
+        <Icon name="heroicons:plus" class="w-5 h-5 mr-2" />
+        Add Product
+      </button>
+    </div>
         <!-- Filters and Search -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
           <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -126,6 +61,15 @@
                   Price
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Discount
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Hot Sale
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  Trending
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Stock
                 </th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -151,7 +95,30 @@
                   <span class="text-sm text-gray-900 dark:text-white">{{ product.category }}</span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="text-sm text-gray-900 dark:text-white">${{ product.price }}</span>
+                  <div class="flex flex-col">
+                    <span class="text-sm text-gray-900 dark:text-white">${{ product.price }}</span>
+                    <span v-if="product.salePrice" class="text-xs text-red-500">${{ product.salePrice }}</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span v-if="product.discount > 0" class="text-sm text-orange-500 font-semibold">-{{ product.discount }}%</span>
+                  <span v-else class="text-sm text-gray-400">-</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span v-if="product.hotSale" class="text-red-500">
+                    <Icon name="heroicons:fire" class="w-5 h-5" />
+                  </span>
+                  <span v-else class="text-gray-400">
+                    <Icon name="heroicons:x-circle" class="w-5 h-5" />
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span v-if="product.trending" class="text-blue-500">
+                    <Icon name="heroicons:chart-bar" class="w-5 h-5" />
+                  </span>
+                  <span v-else class="text-gray-400">
+                    <Icon name="heroicons:x-circle" class="w-5 h-5" />
+                  </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span class="text-sm" :class="getStockClass(product.stock)">{{ product.stock }}</span>
@@ -179,9 +146,6 @@
             </tbody>
           </table>
         </div>
-      </main>
-    </div>
-
     <!-- Add/Edit Product Modal -->
     <div v-if="showAddModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-2xl w-full max-h-screen overflow-y-auto">
@@ -233,6 +197,54 @@
                 required
                 class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Discount (%)</label>
+              <input
+                v-model="productForm.discount"
+                type="number"
+                min="0"
+                max="100"
+                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sale Price (optional)</label>
+              <input
+                v-model="productForm.salePrice"
+                type="number"
+                step="0.01"
+                placeholder="Auto-calculated if empty"
+                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center space-x-3">
+              <input
+                v-model="productForm.hotSale"
+                type="checkbox"
+                id="hotSale"
+                class="w-5 h-5 text-red-600 rounded focus:ring-red-500"
+              />
+              <label for="hotSale" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Mark as Hot Sale
+              </label>
+            </div>
+            <div class="flex items-center space-x-3">
+              <input
+                v-model="productForm.trending"
+                type="checkbox"
+                id="trending"
+                class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+              />
+              <label for="trending" class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Mark as Trending
+              </label>
             </div>
           </div>
           
@@ -288,13 +300,17 @@
 </template>
 
 <script setup>
+definePageMeta({
+  adminTitle: 'Product Management'
+})
+
 // Mock data - in real app, this would come from API
 const products = ref([
-  { id: 1, name: 'Premium Headphones', sku: 'PH001', category: 'Audio Gadgets', price: 299.99, stock: 45, status: 'active', image: 'https://picsum.photos/seed/headphones/100/100' },
-  { id: 2, name: 'Wireless Microphone', sku: 'WM002', category: 'Audio Gadgets', price: 149.99, stock: 0, status: 'out-of-stock', image: 'https://picsum.photos/seed/microphone/100/100' },
-  { id: 3, name: 'Electric Guitar', sku: 'EG003', category: 'Musical Instruments', price: 599.99, stock: 12, status: 'active', image: 'https://picsum.photos/seed/guitar/100/100' },
-  { id: 4, name: 'Studio Monitor', sku: 'SM004', category: 'Studio Equipment', price: 899.99, stock: 8, status: 'active', image: 'https://picsum.photos/seed/monitor/100/100' },
-  { id: 5, name: 'MIDI Keyboard', sku: 'MK005', category: 'Studio Equipment', price: 399.99, stock: 0, status: 'inactive', image: 'https://picsum.photos/seed/keyboard/100/100' }
+  { id: 1, name: 'Premium Headphones', sku: 'PH001', category: 'Audio Gadgets', price: 299.99, stock: 45, status: 'active', image: 'https://picsum.photos/seed/headphones/100/100', discount: 15, salePrice: 254.99, hotSale: true, trending: true },
+  { id: 2, name: 'Wireless Microphone', sku: 'WM002', category: 'Audio Gadgets', price: 149.99, stock: 0, status: 'out-of-stock', image: 'https://picsum.photos/seed/microphone/100/100', discount: 20, salePrice: 119.99, hotSale: true, trending: false },
+  { id: 3, name: 'Electric Guitar', sku: 'EG003', category: 'Musical Instruments', price: 599.99, stock: 12, status: 'active', image: 'https://picsum.photos/seed/guitar/100/100', discount: 0, salePrice: null, hotSale: false, trending: true },
+  { id: 4, name: 'Studio Monitor', sku: 'SM004', category: 'Studio Equipment', price: 899.99, stock: 8, status: 'active', image: 'https://picsum.photos/seed/monitor/100/100', discount: 10, salePrice: 809.99, hotSale: true, trending: false },
+  { id: 5, name: 'MIDI Keyboard', sku: 'MK005', category: 'Studio Equipment', price: 399.99, stock: 0, status: 'inactive', image: 'https://picsum.photos/seed/keyboard/100/100', discount: 0, salePrice: null, hotSale: false, trending: false }
 ])
 
 const searchQuery = ref('')
@@ -310,7 +326,11 @@ const productForm = ref({
   stock: '',
   description: '',
   image: '',
-  status: 'active'
+  status: 'active',
+  discount: 0,
+  salePrice: '',
+  hotSale: false,
+  trending: false
 })
 
 // Computed filtered products
@@ -355,16 +375,29 @@ const deleteProduct = (productId) => {
 }
 
 const saveProduct = () => {
+  // Calculate sale price if not provided
+  let salePrice = productForm.value.salePrice
+  if (!salePrice && productForm.value.discount > 0) {
+    salePrice = (productForm.value.price * (1 - productForm.value.discount / 100)).toFixed(2)
+  } else if (!salePrice) {
+    salePrice = null
+  }
+
+  const productData = {
+    ...productForm.value,
+    salePrice
+  }
+
   if (editingProduct.value) {
     // Update existing product
     const index = products.value.findIndex(p => p.id === editingProduct.value.id)
     if (index > -1) {
-      products.value[index] = { ...productForm.value, id: editingProduct.value.id }
+      products.value[index] = { ...productData, id: editingProduct.value.id }
     }
   } else {
     // Add new product
     const newProduct = {
-      ...productForm.value,
+      ...productData,
       id: Date.now(),
       sku: `PRD${Date.now()}`
     }
@@ -373,7 +406,7 @@ const saveProduct = () => {
   
   closeModal()
   // In real app, this would make an API call
-  console.log('Product saved:', productForm.value)
+  console.log('Product saved:', productData)
 }
 
 const closeModal = () => {
@@ -386,7 +419,11 @@ const closeModal = () => {
     stock: '',
     description: '',
     image: '',
-    status: 'active'
+    status: 'active',
+    discount: 0,
+    salePrice: '',
+    hotSale: false,
+    trending: false
   }
 }
 </script>

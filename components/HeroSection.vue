@@ -68,7 +68,7 @@
         <!-- Enhanced Logo -->
         <div class="mb-8 animate-fade-in-down">
           <div class="inline-flex items-center justify-center w-24 h-24 bg-white/80 dark:bg-white/10 backdrop-blur-xl rounded-3xl border border-gray-200 dark:border-white/20 shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-500">
-            <Icon name="heroicons:microphone" class="w-12 h-12 text-blue-600 dark:text-white animate-pulse" />
+            <img src="~/assets/css/img/Logo.png" alt="PulseTunez Logo" class="w-16 h-16 object-contain rounded-lg" />
           </div>
           <div class="mt-4">
             <h1 class="text-6xl md:text-7xl font-black text-indigo-600 dark:text-purple-400">

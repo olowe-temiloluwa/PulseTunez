@@ -1,81 +1,16 @@
 <template>
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-    <!-- Admin Header -->
-    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-          <div class="flex items-center">
-            <Icon name="heroicons:shield-check" class="w-8 h-8 text-blue-600 dark:text-blue-400 mr-3" />
-            <h1 class="text-xl font-bold text-gray-900 dark:text-white">Analytics Dashboard</h1>
-          </div>
-          <div class="flex items-center space-x-4">
-            <select
-              v-model="selectedPeriod"
-              class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-            >
-              <option value="7">Last 7 Days</option>
-              <option value="30">Last 30 Days</option>
-              <option value="90">Last 90 Days</option>
-              <option value="365">Last Year</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="flex">
-      <!-- Sidebar -->
-      <aside class="w-64 bg-white dark:bg-gray-800 shadow-md min-h-screen">
-        <nav class="mt-8">
-          <div class="px-4 space-y-2">
-            <NuxtLink
-              to="/admin"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:chart-bar" class="w-5 h-5 mr-3" />
-              Dashboard
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/products"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:cube" class="w-5 h-5 mr-3" />
-              Products
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/users"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:users" class="w-5 h-5 mr-3" />
-              Users
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/analytics"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700"
-            >
-              <Icon name="heroicons:chart-pie" class="w-5 h-5 mr-3" />
-              Analytics
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/orders"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:shopping-bag" class="w-5 h-5 mr-3" />
-              Orders
-            </NuxtLink>
-            <NuxtLink
-              to="/admin/settings"
-              class="flex items-center px-4 py-2 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <Icon name="heroicons:cog-6-tooth" class="w-5 h-5 mr-3" />
-              Settings
-            </NuxtLink>
-          </div>
-        </nav>
-      </aside>
-
-      <!-- Main Content -->
-      <main class="flex-1 p-8">
+  <div>
+    <div class="flex justify-end mb-6">
+      <select
+        v-model="selectedPeriod"
+        class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+      >
+        <option value="7">Last 7 Days</option>
+        <option value="30">Last 30 Days</option>
+        <option value="90">Last 90 Days</option>
+        <option value="365">Last Year</option>
+      </select>
+    </div>
         <!-- Key Metrics -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
@@ -248,12 +183,14 @@
             </div>
           </div>
         </div>
-      </main>
-    </div>
   </div>
 </template>
 
 <script setup>
+definePageMeta({
+  adminTitle: 'Analytics Dashboard'
+})
+
 // Mock data - in real app, this would come from API
 const selectedPeriod = ref('30')
 

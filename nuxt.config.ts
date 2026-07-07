@@ -22,6 +22,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'PulseTunez - Audio & Music Equipment Store',
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/Logo.png' }
+      ],
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },

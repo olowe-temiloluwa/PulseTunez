@@ -39,25 +39,22 @@
           class="group"
         >
           <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
-            <!-- Product Image -->
+            <!-- Product Image (navigates to detail) -->
             <div class="relative h-36 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 overflow-hidden">
-              <img
-                :src="product.image"
-                :alt="product.name"
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div class="absolute top-2 right-2 flex space-x-1">
-                <button
+              <NuxtLink :to="`/product/${product.id}`" class="block w-full h-full">
+                <img
+                  :src="product.image"
+                  :alt="product.name"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </NuxtLink>
+              <div class="absolute top-2 right-2">
+                <button 
                   @click="cartStore.addItem(product)"
                   class="bg-white dark:bg-gray-800 p-1.5 rounded-full shadow-md hover:bg-blue-600 dark:hover:bg-blue-600 transition-colors duration-300"
                 >
                   <Icon name="heroicons:shopping-cart" class="w-3.5 h-3.5 text-gray-600 dark:text-gray-300 hover:text-white" />
                 </button>
-              </div>
-              <div class="absolute bottom-2 left-2">
-                <span class="bg-blue-600 text-white px-1.5 py-0.5 rounded-full text-xs font-medium">
-                  {{ category?.name }}
-                </span>
               </div>
             </div>
 
@@ -77,17 +74,15 @@
                 </span>
               </div>
 
-              <!-- Price and Stock -->
+              <!-- Price (navigates to detail) and Cart -->
               <div class="flex items-center justify-between">
-                <div>
-                  <span class="text-base font-bold text-blue-600 dark:text-blue-400">${{ product.price }}</span>
-                </div>
-                <NuxtLink
-                  :to="`/product/${product.id}`"
-                  class="text-xs bg-blue-600 text-white px-2 py-1 rounded-lg hover:bg-blue-700 transition-colors"
+                <NuxtLink :to="`/product/${product.id}`" class="text-base font-bold text-blue-600 dark:text-blue-400 hover:underline">${{ product.price }}</NuxtLink>
+                <button
+                  @click="cartStore.addItem(product)"
+                  class="bg-white text-blue-600 p-1.5 md:p-2 rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
                 >
-                  View
-                </NuxtLink>
+                  <Icon name="heroicons:shopping-cart" class="w-3 h-3 md:w-4 md:h-4" />
+                </button>
               </div>
             </div>
           </div>

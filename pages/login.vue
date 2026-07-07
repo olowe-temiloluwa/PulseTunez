@@ -11,7 +11,7 @@
       <!-- Logo and Branding -->
       <div class="text-center mb-8 animate-fade-in-down">
         <div class="inline-flex items-center justify-center w-20 h-20 bg-white/80 dark:bg-white/10 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-white/20 shadow-2xl mb-4">
-          <Icon name="heroicons:microphone" class="w-10 h-10 text-blue-600 dark:text-white" />
+          <img src="~/assets/css/img/Logo.png" alt="PulseTunez Logo" class="w-12 h-12 object-contain rounded-lg" />
         </div>
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h1>
         <p class="text-gray-600 dark:text-gray-300">Sign in to your PulseTunez account</p>
@@ -152,6 +152,13 @@ import { useAuthStore } from '~/stores/auth'
 
 const { initTheme } = useTheme()
 const authStore = useAuthStore()
+const route = useRoute()
+
+// Redirect target after successful auth (defaults to home)
+const redirectAfterAuth = () => {
+  const redirect = route.query.redirect
+  return navigateTo(typeof redirect === 'string' && redirect ? redirect : '/')
+}
 
 // Form state
 const email = ref('')
@@ -175,7 +182,7 @@ const handleGoogleSignIn = async () => {
       name: 'Google User',
       avatar: null
     })
-    await navigateTo('/')
+    await redirectAfterAuth()
   } catch (error) {
     console.error('Google sign-in error:', error)
   } finally {
@@ -192,7 +199,7 @@ const handleAppleSignIn = async () => {
       name: 'Apple User',
       avatar: null
     })
-    await navigateTo('/')
+    await redirectAfterAuth()
   } catch (error) {
     console.error('Apple sign-in error:', error)
   } finally {
@@ -209,7 +216,7 @@ const handleFacebookSignIn = async () => {
       name: 'Facebook User',
       avatar: null
     })
-    await navigateTo('/')
+    await redirectAfterAuth()
   } catch (error) {
     console.error('Facebook sign-in error:', error)
   } finally {
@@ -230,7 +237,7 @@ const handleLogin = async () => {
         name: email.value.split('@')[0],
         avatar: null
       })
-      await navigateTo('/')
+      await redirectAfterAuth()
     }
   } catch (error) {
     console.error('Login error:', error)
