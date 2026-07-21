@@ -61,7 +61,7 @@
           <NuxtLink to="/shop" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
             Shop Now
           </NuxtLink>
-          <NuxtLink to="/contact" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white dark:bg-gray-800 border-2 border-slate-400 dark:border-slate-500 text-slate-700 dark:text-gray-200 font-semibold rounded-lg shadow-sm hover:border-slate-600 dark:hover:border-slate-400 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors">
+          <NuxtLink to="/contact" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white dark:bg-gray-800 text-slate-700 dark:text-gray-200 font-semibold rounded-lg shadow-sm hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors">
             Contact Us
           </NuxtLink>
         </div>

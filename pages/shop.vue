@@ -19,7 +19,7 @@
             >
               <NuxtLink
                 :to="ad.link"
-                class="relative block h-48 sm:h-64 md:h-80 rounded-none sm:rounded-xl overflow-hidden shadow-xl"
+                class="relative block h-56 sm:h-72 md:h-[22rem] rounded-none sm:rounded-xl overflow-hidden shadow-xl"
                 @click="handleAdClick(ad)"
               >
                 <img
