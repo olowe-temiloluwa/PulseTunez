@@ -1,8 +1,8 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
     <!-- Ads Carousel -->
-    <section v-if="activeAds.length > 0" class="bg-white dark:bg-gray-900 overflow-hidden pt-2">
-      <div class="relative w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+    <section v-if="activeAds.length > 0" class="bg-white dark:bg-gray-900 overflow-hidden pt-0 sm:pt-2">
+      <div class="relative w-full max-w-7xl mx-auto px-0 sm:px-4 md:px-6 lg:px-8">
         <!-- Carousel Container (3 visible on desktop with peeking sides, 1 full on mobile) -->
         <div class="overflow-hidden">
           <div
@@ -14,12 +14,12 @@
             <div
               v-for="(ad, index) in loopedAds"
               :key="index"
-              class="carousel-slide flex-shrink-0 px-2 transition-opacity duration-500"
+              class="carousel-slide flex-shrink-0 px-0 sm:px-2 transition-opacity duration-500"
               :class="index === position ? 'opacity-100' : 'opacity-60'"
             >
               <NuxtLink
                 :to="ad.link"
-                class="relative block h-48 sm:h-64 md:h-80 rounded-xl overflow-hidden shadow-xl"
+                class="relative block h-48 sm:h-64 md:h-80 rounded-none sm:rounded-xl overflow-hidden shadow-xl"
                 @click="handleAdClick(ad)"
               >
                 <img
