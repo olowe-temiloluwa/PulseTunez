@@ -279,6 +279,16 @@
               </div>
             </NuxtLink>
 
+            <NuxtLink to="/order-history" class="w-full text-left px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors block">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <Icon name="heroicons:shopping-bag" class="w-5 h-5 text-gray-500 dark:text-gray-400 mr-3" />
+                  <span class="text-gray-900 dark:text-white">Order History</span>
+                </div>
+                <Icon name="heroicons:chevron-right" class="w-5 h-5 text-gray-400" />
+              </div>
+            </NuxtLink>
+
             <button 
               @click="handleLogout"
               class="w-full text-left px-4 py-3 rounded-lg border border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
