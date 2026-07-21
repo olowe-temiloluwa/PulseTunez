@@ -1,25 +1,67 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900">
     <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+    <section
+      ref="heroSection"
+      class="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-200 dark:bg-gray-950"
+      @mousemove="onHeroMouseMove"
+      @mouseenter="onHeroMouseEnter"
+      @mouseleave="onHeroMouseLeave"
+    >
+      <!-- Calm, muted background -->
+      <div class="absolute inset-0 bg-slate-200 dark:bg-gray-950">
+        <!-- Soft radial spotlight, grayscale -->
+        <div
+          class="hero-orb absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full opacity-50 dark:opacity-100"
+          style="background: radial-gradient(circle, rgba(71,85,105,0.5) 0%, rgba(71,85,105,0.18) 40%, transparent 70%);"
+          :style="{ transform: `translate(-50%, ${-200 + scrollOffset}px)` }"
+        ></div>
+        <!-- Faint waveform texture tiled across the whole background -->
+        <div
+          class="absolute inset-0 opacity-20 dark:opacity-20"
+          :style="{ backgroundImage: waveformTileUrl, backgroundSize: '140px 64px' }"
+        ></div>
+        <!-- Equalizer/waveform strip along the base of the hero -->
+        <div
+          class="absolute bottom-0 left-0 right-0 h-32 opacity-30 dark:opacity-40"
+          :style="{ backgroundImage: waveformTileUrl, backgroundSize: '140px 128px', backgroundRepeat: 'repeat-x', backgroundPosition: 'bottom' }"
+        ></div>
+        <!-- Cursor-follow spotlight: brightens the pattern/glow right under the pointer -->
+        <div
+          class="hero-spotlight absolute inset-0 pointer-events-none"
+          :style="{
+            background: `radial-gradient(circle 260px at ${mouseX}px ${mouseY}px, rgba(30,41,59,0.28), rgba(30,41,59,0.08) 55%, transparent 75%)`,
+            opacity: spotlightOpacity
+          }"
+        ></div>
+        <!-- Base fade so edges stay calm -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-200 dark:to-gray-950"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-200 dark:from-gray-950 via-transparent to-transparent opacity-60"></div>
+      </div>
+
+      <div class="hero-content relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center" :class="{ 'hero-content-visible': heroVisible }">
         <div class="mb-8">
-          <div class="inline-flex items-center justify-center w-20 h-20 bg-blue-600 rounded-2xl mb-6">
-            <Icon name="heroicons:microphone" class="w-10 h-10 text-white" />
+          <div class="relative inline-flex items-center justify-center w-24 h-24 mb-6">
+            <!-- Pulse rings emanating from the logo -->
+            <span class="pulse-ring absolute inset-0 rounded-2xl border border-slate-400/50 dark:border-slate-500/40"></span>
+            <span class="pulse-ring pulse-ring-delay absolute inset-0 rounded-2xl border border-slate-400/50 dark:border-slate-500/40"></span>
+            <div class="relative z-10 w-24 h-24 bg-white dark:bg-gray-800 rounded-2xl shadow-xl shadow-slate-300/60 dark:shadow-black/40 ring-1 ring-slate-200 dark:ring-gray-700 p-3">
+              <img src="~/assets/css/img/Logo.png" alt="PulseTunez Logo" class="w-full h-full object-contain rounded-xl" />
+            </div>
           </div>
-          <h1 class="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 class="text-5xl md:text-7xl font-bold text-slate-800 dark:text-white mb-4">
             PulseTunez
           </h1>
-          <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8">
+          <p class="text-xl md:text-2xl text-slate-600 dark:text-gray-300 mb-8">
             Your Premium Audio & Music Equipment Destination
           </p>
         </div>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <NuxtLink to="/shop" class="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+          <NuxtLink to="/shop" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
             Shop Now
           </NuxtLink>
-          <NuxtLink to="/contact" class="inline-flex items-center justify-center px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <NuxtLink to="/contact" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white dark:bg-gray-800 border-2 border-slate-400 dark:border-slate-500 text-slate-700 dark:text-gray-200 font-semibold rounded-lg shadow-sm hover:border-slate-600 dark:hover:border-slate-400 hover:bg-slate-50 dark:hover:bg-gray-700 transition-colors">
             Contact Us
           </NuxtLink>
         </div>
@@ -198,16 +240,25 @@
         </div>
 
         <!-- CTA -->
-        <section class="py-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-center">
-          <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Ready to Upgrade Your Sound?</h2>
-          <p class="text-lg text-blue-100 mb-6">Get in touch with our experts for personalized recommendations</p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <NuxtLink to="/contact" class="inline-flex items-center justify-center px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
-              Contact Experts
-            </NuxtLink>
-            <NuxtLink to="/shop" class="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition-colors">
-              Quick Shop
-            </NuxtLink>
+        <section class="relative overflow-hidden py-14 sm:py-16 md:py-20 px-6 sm:px-10 bg-slate-900 dark:bg-slate-800 rounded-2xl text-center">
+          <!-- Subtle waveform accent, matches hero theme -->
+          <div
+            class="absolute inset-0 opacity-10"
+            :style="{ backgroundImage: waveformTileUrl, backgroundSize: '140px 64px' }"
+          ></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900 dark:from-slate-950/60 via-transparent to-transparent"></div>
+
+          <div class="relative z-10">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4">Ready to Upgrade Your Sound?</h2>
+            <p class="text-base md:text-lg text-slate-300 mb-6 md:mb-8 max-w-xl mx-auto">Get in touch with our experts for personalized recommendations</p>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <NuxtLink to="/contact" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-slate-900 font-semibold rounded-xl shadow-lg hover:bg-slate-100 transition-colors duration-300">
+                Contact Experts
+              </NuxtLink>
+              <NuxtLink to="/shop" class="w-full sm:w-auto inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-slate-600 text-white font-semibold rounded-xl hover:border-white hover:bg-white/10 transition-colors duration-300">
+                Quick Shop
+              </NuxtLink>
+            </div>
           </div>
         </section>
       </div>
@@ -219,4 +270,142 @@
 useHead({
   title: 'About Us - PulseTunez'
 })
+
+// Gentle entrance animation for the hero content
+const heroVisible = ref(false)
+
+// Subtle audio-waveform / equalizer texture (monochrome, ties into the audio brand)
+const waveformSvg = `<svg xmlns='http://www.w3.org/2000/svg' width='140' height='64'>
+  <rect x='2' y='40' width='8' height='24' fill='#475569'/>
+  <rect x='18' y='24' width='8' height='40' fill='#475569'/>
+  <rect x='34' y='8' width='8' height='56' fill='#475569'/>
+  <rect x='50' y='30' width='8' height='34' fill='#475569'/>
+  <rect x='66' y='2' width='8' height='62' fill='#475569'/>
+  <rect x='82' y='20' width='8' height='44' fill='#475569'/>
+  <rect x='98' y='36' width='8' height='28' fill='#475569'/>
+  <rect x='114' y='14' width='8' height='50' fill='#475569'/>
+  <rect x='130' y='44' width='8' height='20' fill='#475569'/>
+</svg>`
+const waveformTileUrl = `url("data:image/svg+xml,${encodeURIComponent(waveformSvg)}")`
+
+// Subtle background parallax on scroll (capped, disabled for reduced-motion users)
+const scrollOffset = ref(0)
+let prefersReducedMotion = false
+let scrollTicking = false
+
+const updateScrollOffset = () => {
+  if (prefersReducedMotion) return
+  const maxOffset = 40
+  scrollOffset.value = Math.min(window.scrollY * 0.08, maxOffset)
+  scrollTicking = false
+}
+
+const onScroll = () => {
+  if (!scrollTicking) {
+    scrollTicking = true
+    requestAnimationFrame(updateScrollOffset)
+  }
+}
+
+// Cursor-follow spotlight: highlights the background right under the pointer,
+// so the region you're hovering is more visible than the rest of the hero.
+const heroSection = ref(null)
+const mouseX = ref(0)
+const mouseY = ref(0)
+const spotlightOpacity = ref(0)
+let mouseTicking = false
+let pendingX = 0
+let pendingY = 0
+
+const onHeroMouseMove = (e) => {
+  if (prefersReducedMotion || !heroSection.value) return
+  const rect = heroSection.value.getBoundingClientRect()
+  pendingX = e.clientX - rect.left
+  pendingY = e.clientY - rect.top
+  if (!mouseTicking) {
+    mouseTicking = true
+    requestAnimationFrame(() => {
+      mouseX.value = pendingX
+      mouseY.value = pendingY
+      mouseTicking = false
+    })
+  }
+}
+
+const onHeroMouseEnter = () => {
+  if (prefersReducedMotion) return
+  spotlightOpacity.value = 1
+}
+
+const onHeroMouseLeave = () => {
+  spotlightOpacity.value = 0
+}
+
+onMounted(() => {
+  prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  requestAnimationFrame(() => {
+    heroVisible.value = true
+  })
+  window.addEventListener('scroll', onScroll, { passive: true })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+})
 </script>
+
+<style scoped>
+.hero-content {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hero-content-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-orb {
+  transition: transform 0.3s ease-out;
+}
+
+.hero-spotlight {
+  transition: opacity 0.4s ease-out;
+}
+
+.pulse-ring {
+  animation: pulse-ring 3s ease-out infinite;
+}
+
+.pulse-ring-delay {
+  animation-delay: 1.5s;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content {
+    transition: none;
+  }
+  .hero-spotlight {
+    display: none;
+  }
+  .hero-orb {
+    transition: none;
+  }
+  .pulse-ring {
+    animation: none;
+    display: none;
+  }
+}
+</style>
