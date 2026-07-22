@@ -193,7 +193,7 @@
 
           <button
             type="submit"
-            :disabled="isLoading || !passwordsMatch || !agreeToTerms"
+            :disabled="isLoading || !isFormValid"
             class="w-full btn-primary flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Icon v-if="isLoading" name="heroicons:arrow-path" class="w-5 h-5 mr-2 animate-spin" />
@@ -256,6 +256,15 @@ const passwordStrength = computed(() => {
 const passwordsMatch = computed(() => {
   if (!password.value || !confirmPassword.value) return true
   return password.value === confirmPassword.value
+})
+
+const isFormValid = computed(() => {
+  return isValidName(firstName.value) &&
+    isValidName(lastName.value) &&
+    isValidEmail(email.value) &&
+    isValidPassword(password.value) &&
+    password.value === confirmPassword.value &&
+    agreeToTerms.value
 })
 
 const passwordStrengthClass = (level) => {

@@ -83,7 +83,7 @@
             <button 
               type="submit"
               class="w-full btn-primary"
-              :disabled="isSubmitting"
+              :disabled="isSubmitting || !isFormValid"
             >
               <Icon v-if="isSubmitting" name="loader-2" class="w-5 h-5 inline mr-2 animate-spin" />
               {{ isSubmitting ? 'Sending...' : 'Send Message' }}
@@ -209,6 +209,15 @@ const form = ref({
   phone: '',
   subject: '',
   message: ''
+})
+
+const isFormValid = computed(() => {
+  return isValidName(form.value.firstName) &&
+    isValidName(form.value.lastName) &&
+    isValidEmail(form.value.email) &&
+    (!form.value.phone || isValidPhone(form.value.phone)) &&
+    isNonEmpty(form.value.subject) &&
+    isNonEmpty(form.value.message)
 })
 
 const submitForm = async () => {

@@ -121,7 +121,12 @@
             </div>
 
             <div class="flex justify-end mt-6">
-              <button type="button" @click="goToStep(2, saveContactAndContinue)" class="btn-primary">
+              <button
+                type="button"
+                @click="goToStep(2, saveContactAndContinue)"
+                class="btn-primary"
+                :disabled="!contactValid"
+              >
                 Continue to Address
               </button>
             </div>
@@ -209,7 +214,12 @@
               <button type="button" @click="currentStep = 1" class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 Back
               </button>
-              <button type="button" @click="goToStep(3, saveAddressAndContinue)" class="btn-primary">
+              <button
+                type="button"
+                @click="goToStep(3, saveAddressAndContinue)"
+                class="btn-primary"
+                :disabled="!addressValid"
+              >
                 Continue to Payment
               </button>
             </div>
@@ -241,12 +251,26 @@
               </div>
               <div>
                 <label class="form-label">Card Number</label>
-                <input
-                  v-model="cardDetails.cardNumber"
-                  type="text"
-                  placeholder="1234 5678 9012 3456"
-                  class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-                >
+                <div class="relative">
+                  <input
+                    :value="cardDetails.cardNumber"
+                    @input="onCardNumberInput"
+                    type="text"
+                    placeholder="1234 5678 9012 3456"
+                    maxlength="23"
+                    class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 pr-16 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  >
+                  <span
+                    v-if="cardType"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold uppercase px-2 py-1 rounded"
+                    :class="cardTypeBadgeClass"
+                  >
+                    {{ cardType }}
+                  </span>
+                </div>
+                <p v-if="cardDetails.cardNumber && !cardNumberValid" class="text-xs text-red-500 mt-1">
+                  Enter a valid card number.
+                </p>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -255,17 +279,25 @@
                     v-model="cardDetails.expiryDate"
                     type="text"
                     placeholder="MM/YY"
+                    maxlength="5"
                     class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   >
+                  <p v-if="cardDetails.expiryDate && !expiryValid" class="text-xs text-red-500 mt-1">
+                    Invalid or expired date.
+                  </p>
                 </div>
                 <div>
                   <label class="form-label">CVV</label>
                   <input
                     v-model="cardDetails.cvv"
                     type="text"
-                    placeholder="123"
+                    :placeholder="cardType === 'amex' ? '1234' : '123'"
+                    :maxlength="cardType === 'amex' ? 4 : 3"
                     class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   >
+                  <p v-if="cardDetails.cvv && !cvvValid" class="text-xs text-red-500 mt-1">
+                    Invalid CVV.
+                  </p>
                 </div>
               </div>
             </div>
@@ -278,7 +310,7 @@
                 type="button"
                 @click="submitOrder"
                 class="btn-primary"
-                :disabled="isProcessing"
+                :disabled="isProcessing || !paymentValid"
               >
                 <Icon v-if="isProcessing" name="heroicons:arrow-path" class="w-5 h-5 inline mr-2 animate-spin" />
                 {{ isProcessing ? 'Processing Payment...' : 'Place Order' }}
@@ -400,6 +432,44 @@ const cardDetails = ref({
   cvv: ''
 })
 
+// --- Validation ---
+const contactValid = computed(() => {
+  const c = contactForm.value
+  const baseValid = isValidName(c.firstName) && isValidName(c.lastName) && isValidEmail(c.email) && isValidPhone(c.phone)
+  if (!baseValid) return false
+  if (isGift.value) return isNonEmpty(recipientName.value)
+  return true
+})
+
+const addressValid = computed(() => {
+  const a = addressForm.value
+  return isNonEmpty(a.street) && isNonEmpty(a.localGovernment) && isNonEmpty(a.state) && isNonEmpty(a.country) && isValidPostalCode(a.postalCode)
+})
+
+const cardType = computed(() => detectCardType(cardDetails.value.cardNumber))
+const cardNumberValid = computed(() => isValidCardNumber(cardDetails.value.cardNumber))
+const expiryValid = computed(() => isValidExpiryDate(cardDetails.value.expiryDate))
+const cvvValid = computed(() => isValidCVV(cardDetails.value.cvv, cardType.value))
+
+const cardTypeBadgeClass = computed(() => {
+  const classes = {
+    visa: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+    mastercard: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
+    amex: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
+    discover: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+  }
+  return classes[cardType.value] || 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+})
+
+const paymentValid = computed(() => {
+  if (paymentMethod.value !== 'card') return true
+  return cardNumberValid.value && expiryValid.value && cvvValid.value
+})
+
+const onCardNumberInput = (event) => {
+  cardDetails.value.cardNumber = formatCardNumber(event.target.value)
+}
+
 const shippingCost = computed(() => {
   return cartStore.totalPrice >= 100 ? 0 : 10
 })
@@ -418,8 +488,7 @@ const goToStep = (step, beforeSave) => {
 }
 
 const saveContactAndContinue = () => {
-  if (isGift.value && !recipientName.value.trim()) return
-  if (!contactForm.value.firstName || !contactForm.value.lastName || !contactForm.value.email || !contactForm.value.phone) return
+  if (!contactValid.value) return
 
   localStorage.setItem('checkoutContact', JSON.stringify(contactForm.value))
   hasSavedContact.value = true
@@ -427,7 +496,7 @@ const saveContactAndContinue = () => {
 }
 
 const saveAddressAndContinue = () => {
-  if (!addressForm.value.street || !addressForm.value.localGovernment || !addressForm.value.state || !addressForm.value.country || !addressForm.value.postalCode) return
+  if (!addressValid.value) return
 
   const saved = localStorage.getItem('shippingAddresses')
   let addresses = saved ? JSON.parse(saved) : []

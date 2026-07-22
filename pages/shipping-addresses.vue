@@ -161,7 +161,7 @@
               </button>
               <button
                 type="submit"
-                :disabled="isAdding"
+                :disabled="isAdding || !isAddressFormValid"
                 class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Icon v-if="isAdding" name="heroicons:arrow-path" class="w-5 h-5 mr-2 animate-spin inline" />
@@ -266,6 +266,15 @@ const countries = [
 const states = computed(() => {
   const selectedCountry = countries.find(c => c.name === newAddress.value.country)
   return selectedCountry ? selectedCountry.states : []
+})
+
+const isAddressFormValid = computed(() => {
+  const a = newAddress.value
+  return isNonEmpty(a.country) &&
+    isNonEmpty(a.state) &&
+    isNonEmpty(a.localGovernment) &&
+    isNonEmpty(a.street) &&
+    isValidPostalCode(a.postalCode)
 })
 
 onMounted(() => {

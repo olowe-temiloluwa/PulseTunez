@@ -39,6 +39,7 @@ const navItems = [
   { to: '/admin/users', label: 'Users', icon: 'heroicons:users' },
   { to: '/admin/analytics', label: 'Analytics', icon: 'heroicons:chart-pie' },
   { to: '/admin/orders', label: 'Orders', icon: 'heroicons:shopping-bag' },
+  { to: '/admin/unattended-orders', label: 'Unattended Orders', icon: 'heroicons:exclamation-triangle' },
   { to: '/admin/settings', label: 'Settings', icon: 'heroicons:cog-6-tooth' }
 ]
 

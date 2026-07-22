@@ -118,7 +118,7 @@
 
           <button
             type="submit"
-            :disabled="isLoading"
+            :disabled="isLoading || !isFormValid"
             class="w-full btn-primary flex items-center justify-center"
           >
             <Icon v-if="isLoading" name="heroicons:arrow-path" class="w-5 h-5 mr-2 animate-spin" />
@@ -166,6 +166,8 @@ const password = ref('')
 const rememberMe = ref(false)
 const showPassword = ref(false)
 const isLoading = ref(false)
+
+const isFormValid = computed(() => isValidEmail(email.value) && isValidPassword(password.value))
 
 // Initialize theme
 onMounted(() => {
