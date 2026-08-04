@@ -118,12 +118,18 @@
 
           <button
             type="submit"
-            :disabled="isLoading || !isFormValid"
+            :disabled="isLoading || isSuccess || !isFormValid"
             class="w-full btn-primary flex items-center justify-center"
           >
             <Icon v-if="isLoading" name="heroicons:arrow-path" class="w-5 h-5 mr-2 animate-spin" />
-            <span>{{ isLoading ? 'Signing in...' : 'Sign In' }}</span>
+            <Icon v-else-if="isSuccess" name="heroicons:check" class="w-5 h-5 mr-2" />
+            <span>{{ isLoading ? 'Signing in...' : isSuccess ? 'Success!' : 'Sign In' }}</span>
           </button>
+
+          <!-- Error Message -->
+          <div v-if="errorMessage" class="p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg">
+            <p class="text-sm text-red-700 dark:text-red-300">{{ errorMessage }}</p>
+          </div>
         </form>
 
         <!-- Sign Up Link -->
@@ -157,7 +163,8 @@ const route = useRoute()
 // Redirect target after successful auth (defaults to home)
 const redirectAfterAuth = () => {
   const redirect = route.query.redirect
-  return navigateTo(typeof redirect === 'string' && redirect ? redirect : '/')
+  const target = typeof redirect === 'string' && redirect ? redirect : '/'
+  return navigateTo(target + '?auth=success')
 }
 
 // Form state
@@ -166,6 +173,8 @@ const password = ref('')
 const rememberMe = ref(false)
 const showPassword = ref(false)
 const isLoading = ref(false)
+const isSuccess = ref(false)
+const errorMessage = ref('')
 
 const isFormValid = computed(() => isValidEmail(email.value) && isValidPassword(password.value))
 
@@ -177,6 +186,7 @@ onMounted(() => {
 // Social sign-in handlers
 const handleGoogleSignIn = async () => {
   isLoading.value = true
+  errorMessage.value = ''
   try {
     await new Promise(resolve => setTimeout(resolve, 1000))
     authStore.login({
@@ -184,16 +194,21 @@ const handleGoogleSignIn = async () => {
       name: 'Google User',
       avatar: null
     })
+    isSuccess.value = true
+    await new Promise(resolve => setTimeout(resolve, 2000))
     await redirectAfterAuth()
   } catch (error) {
     console.error('Google sign-in error:', error)
+    errorMessage.value = 'Google sign-in failed. Please try again.'
   } finally {
     isLoading.value = false
+    if (!isSuccess.value) isSuccess.value = false
   }
 }
 
 const handleAppleSignIn = async () => {
   isLoading.value = true
+  errorMessage.value = ''
   try {
     await new Promise(resolve => setTimeout(resolve, 1000))
     authStore.login({
@@ -201,16 +216,21 @@ const handleAppleSignIn = async () => {
       name: 'Apple User',
       avatar: null
     })
+    isSuccess.value = true
+    await new Promise(resolve => setTimeout(resolve, 2000))
     await redirectAfterAuth()
   } catch (error) {
     console.error('Apple sign-in error:', error)
+    errorMessage.value = 'Apple sign-in failed. Please try again.'
   } finally {
     isLoading.value = false
+    if (!isSuccess.value) isSuccess.value = false
   }
 }
 
 const handleFacebookSignIn = async () => {
   isLoading.value = true
+  errorMessage.value = ''
   try {
     await new Promise(resolve => setTimeout(resolve, 1000))
     authStore.login({
@@ -218,17 +238,22 @@ const handleFacebookSignIn = async () => {
       name: 'Facebook User',
       avatar: null
     })
+    isSuccess.value = true
+    await new Promise(resolve => setTimeout(resolve, 2000))
     await redirectAfterAuth()
   } catch (error) {
     console.error('Facebook sign-in error:', error)
+    errorMessage.value = 'Facebook sign-in failed. Please try again.'
   } finally {
     isLoading.value = false
+    if (!isSuccess.value) isSuccess.value = false
   }
 }
 
 // Email/password login
 const handleLogin = async () => {
   isLoading.value = true
+  errorMessage.value = ''
   
   try {
     await new Promise(resolve => setTimeout(resolve, 1500))
@@ -239,12 +264,16 @@ const handleLogin = async () => {
         name: email.value.split('@')[0],
         avatar: null
       })
+      isSuccess.value = true
+      await new Promise(resolve => setTimeout(resolve, 2000))
       await redirectAfterAuth()
     }
   } catch (error) {
     console.error('Login error:', error)
+    errorMessage.value = 'Login failed. Please check your credentials and try again.'
   } finally {
     isLoading.value = false
+    if (!isSuccess.value) isSuccess.value = false
   }
 }
 

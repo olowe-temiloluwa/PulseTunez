@@ -162,13 +162,22 @@
               :disabled="isSaving"
               class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Icon v-if="isSaving" name="heroicons:arrow-path" class="w-5 h-5 mr-2 animate-spin inline" />
+              <Loader v-if="isSaving" size="sm" color="white" />
               {{ isSaving ? 'Saving...' : 'Save Changes' }}
             </button>
           </div>
         </form>
       </div>
     </div>
+
+    <!-- Alert Modal -->
+    <AlertModal
+      :is-open="showAlert"
+      :type="alertType"
+      :title="alertTitle"
+      :message="alertMessage"
+      @close="showAlert = false"
+    />
   </div>
 </template>
 
@@ -179,6 +188,10 @@ const authStore = useAuthStore()
 const fileInput = ref(null)
 const isSaving = ref(false)
 const profileImage = ref('')
+const showAlert = ref(false)
+const alertType = ref('success')
+const alertTitle = ref('')
+const alertMessage = ref('')
 
 const formData = ref({
   name: '',
@@ -278,11 +291,21 @@ const handleSave = async () => {
       avatar: profileImage.value
     }))
     
-    alert('Profile updated successfully!')
-    navigateTo('/settings')
+    // Show success alert
+    alertType.value = 'success'
+    alertTitle.value = 'Profile Updated'
+    alertMessage.value = 'Your profile information has been successfully updated.'
+    showAlert.value = true
+    
+    setTimeout(() => {
+      navigateTo('/settings')
+    }, 1500)
   } catch (error) {
     console.error('Error saving profile:', error)
-    alert('Error saving profile. Please try again.')
+    alertType.value = 'error'
+    alertTitle.value = 'Error'
+    alertMessage.value = 'Failed to save profile. Please try again.'
+    showAlert.value = true
   } finally {
     isSaving.value = false
   }

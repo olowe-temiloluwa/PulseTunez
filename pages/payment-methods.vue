@@ -166,7 +166,7 @@
                 :disabled="isAdding"
                 class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Icon v-if="isAdding" name="heroicons:arrow-path" class="w-5 h-5 mr-2 animate-spin inline" />
+                <Loader v-if="isAdding" size="sm" color="white" />
                 {{ isAdding ? 'Adding...' : 'Add Card' }}
               </button>
             </div>
@@ -217,7 +217,7 @@
                 <Icon name="heroicons:star" class="w-5 h-5" />
               </button>
               <button
-                @click="deleteCard(index)"
+                @click="showDeleteConfirm(index)"
                 class="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 title="Remove card"
               >
@@ -228,6 +228,27 @@
         </div>
       </div>
     </div>
+
+    <!-- Confirm Modal for Delete -->
+    <ConfirmModal
+      :is-open="showDeleteModal"
+      title="Remove Payment Method"
+      message="Are you sure you want to remove this payment method? This action cannot be undone."
+      confirm-text="Remove"
+      cancel-text="Cancel"
+      icon="heroicons:trash"
+      @confirm="deleteCard"
+      @cancel="showDeleteModal = false"
+    />
+
+    <!-- Alert Modal -->
+    <AlertModal
+      :is-open="showAlert"
+      :type="alertType"
+      :title="alertTitle"
+      :message="alertMessage"
+      @close="showAlert = false"
+    />
   </div>
 </template>
 
@@ -235,6 +256,12 @@
 const showAddForm = ref(false)
 const isAdding = ref(false)
 const selectedCardType = ref('visa')
+const showDeleteModal = ref(false)
+const deleteIndex = ref(null)
+const showAlert = ref(false)
+const alertType = ref('success')
+const alertTitle = ref('')
+const alertMessage = ref('')
 
 const newCard = ref({
   type: 'visa',
@@ -327,10 +354,17 @@ const handleAddPayment = async () => {
     selectedCardType.value = 'visa'
     showAddForm.value = false
     
-    alert('Payment method added successfully!')
+    // Show success alert
+    alertType.value = 'success'
+    alertTitle.value = 'Payment Method Added'
+    alertMessage.value = 'Your payment method has been successfully added.'
+    showAlert.value = true
   } catch (error) {
     console.error('Error adding payment method:', error)
-    alert('Error adding payment method. Please try again.')
+    alertType.value = 'error'
+    alertTitle.value = 'Error'
+    alertMessage.value = 'Failed to add payment method. Please try again.'
+    showAlert.value = true
   } finally {
     isAdding.value = false
   }
@@ -343,10 +377,23 @@ const setDefault = (index) => {
   localStorage.setItem('paymentMethods', JSON.stringify(paymentMethods.value))
 }
 
-const deleteCard = (index) => {
-  if (confirm('Are you sure you want to remove this payment method?')) {
-    paymentMethods.value.splice(index, 1)
+const showDeleteConfirm = (index) => {
+  deleteIndex.value = index
+  showDeleteModal.value = true
+}
+
+const deleteCard = () => {
+  if (deleteIndex.value !== null) {
+    paymentMethods.value.splice(deleteIndex.value, 1)
     localStorage.setItem('paymentMethods', JSON.stringify(paymentMethods.value))
+    showDeleteModal.value = false
+    deleteIndex.value = null
+    
+    // Show success alert
+    alertType.value = 'success'
+    alertTitle.value = 'Payment Method Removed'
+    alertMessage.value = 'Your payment method has been successfully removed.'
+    showAlert.value = true
   }
 }
 

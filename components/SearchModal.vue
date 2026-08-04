@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <div class="max-h-96 overflow-y-auto">
+      <div class="max-h-[500px] overflow-y-auto">
         <div v-if="loading" class="text-center py-8 text-gray-500">
           Searching...
         </div>
@@ -107,7 +107,7 @@
         </div>
         <div v-else class="divide-y divide-gray-200 dark:divide-gray-700">
           <div
-            v-for="product in searchResults.slice(0, 6)"
+            v-for="product in searchResults.slice(0, 10)"
             :key="product.id"
             @click="goToProduct(product.id)"
             class="flex items-center space-x-4 p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
@@ -127,7 +127,7 @@
         </div>
       </div>
 
-      <div v-if="searchResults.length > 6" class="p-3 border-t border-gray-200 dark:border-gray-700 text-center">
+      <div v-if="searchResults.length > 10" class="p-3 border-t border-gray-200 dark:border-gray-700 text-center">
         <button
           @click="viewAllResults"
           class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"

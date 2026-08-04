@@ -193,12 +193,18 @@
 
           <button
             type="submit"
-            :disabled="isLoading || !isFormValid"
+            :disabled="isLoading || isSuccess || !isFormValid"
             class="w-full btn-primary flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Icon v-if="isLoading" name="heroicons:arrow-path" class="w-5 h-5 mr-2 animate-spin" />
-            <span>{{ isLoading ? 'Creating account...' : 'Create Account' }}</span>
+            <Icon v-else-if="isSuccess" name="heroicons:check" class="w-5 h-5 mr-2" />
+            <span>{{ isLoading ? 'Creating account...' : isSuccess ? 'Success!' : 'Create Account' }}</span>
           </button>
+
+          <!-- Error Message -->
+          <div v-if="errorMessage" class="p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg">
+            <p class="text-sm text-red-700 dark:text-red-300">{{ errorMessage }}</p>
+          </div>
         </form>
 
         <!-- Sign In Link -->
@@ -238,6 +244,8 @@ const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const agreeToTerms = ref(false)
 const isLoading = ref(false)
+const isSuccess = ref(false)
+const errorMessage = ref('')
 
 // Password strength calculation
 const passwordStrength = computed(() => {
@@ -296,6 +304,7 @@ onMounted(() => {
 // Social sign-up handlers
 const handleGoogleSignUp = async () => {
   isLoading.value = true
+  errorMessage.value = ''
   try {
     await new Promise(resolve => setTimeout(resolve, 1000))
     authStore.login({
@@ -303,16 +312,21 @@ const handleGoogleSignUp = async () => {
       name: 'Google User',
       avatar: null
     })
-    await navigateTo('/')
+    isSuccess.value = true
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    await navigateTo('/?auth=success')
   } catch (error) {
     console.error('Google sign-up error:', error)
+    errorMessage.value = 'Google sign-up failed. Please try again.'
   } finally {
     isLoading.value = false
+    if (!isSuccess.value) isSuccess.value = false
   }
 }
 
 const handleAppleSignUp = async () => {
   isLoading.value = true
+  errorMessage.value = ''
   try {
     await new Promise(resolve => setTimeout(resolve, 1000))
     authStore.login({
@@ -320,16 +334,21 @@ const handleAppleSignUp = async () => {
       name: 'Apple User',
       avatar: null
     })
-    await navigateTo('/')
+    isSuccess.value = true
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    await navigateTo('/?auth=success')
   } catch (error) {
     console.error('Apple sign-up error:', error)
+    errorMessage.value = 'Apple sign-up failed. Please try again.'
   } finally {
     isLoading.value = false
+    if (!isSuccess.value) isSuccess.value = false
   }
 }
 
 const handleFacebookSignUp = async () => {
   isLoading.value = true
+  errorMessage.value = ''
   try {
     await new Promise(resolve => setTimeout(resolve, 1000))
     authStore.login({
@@ -337,21 +356,27 @@ const handleFacebookSignUp = async () => {
       name: 'Facebook User',
       avatar: null
     })
-    await navigateTo('/')
+    isSuccess.value = true
+    await new Promise(resolve => setTimeout(resolve, 2000))
+    await navigateTo('/?auth=success')
   } catch (error) {
     console.error('Facebook sign-up error:', error)
+    errorMessage.value = 'Facebook sign-up failed. Please try again.'
   } finally {
     isLoading.value = false
+    if (!isSuccess.value) isSuccess.value = false
   }
 }
 
 // Email/password registration
 const handleRegister = async () => {
   if (!passwordsMatch.value) {
+    errorMessage.value = 'Passwords do not match.'
     return
   }
 
   isLoading.value = true
+  errorMessage.value = ''
   
   try {
     await new Promise(resolve => setTimeout(resolve, 1500))
@@ -362,12 +387,16 @@ const handleRegister = async () => {
         name: `${firstName.value} ${lastName.value}`.trim() || email.value.split('@')[0],
         avatar: null
       })
-      await navigateTo('/')
+      isSuccess.value = true
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      await navigateTo('/?auth=success')
     }
   } catch (error) {
     console.error('Registration error:', error)
+    errorMessage.value = 'Registration failed. Please try again.'
   } finally {
     isLoading.value = false
+    if (!isSuccess.value) isSuccess.value = false
   }
 }
 

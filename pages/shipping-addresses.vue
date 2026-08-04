@@ -164,7 +164,7 @@
                 :disabled="isAdding || !isAddressFormValid"
                 class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Icon v-if="isAdding" name="heroicons:arrow-path" class="w-5 h-5 mr-2 animate-spin inline" />
+                <Loader v-if="isAdding" size="sm" color="white" />
                 {{ isAdding ? 'Adding...' : 'Add Address' }}
               </button>
             </div>
@@ -217,7 +217,7 @@
                 <Icon name="heroicons:star" class="w-5 h-5" />
               </button>
               <button
-                @click="deleteAddress(index)"
+                @click="showDeleteConfirm(index)"
                 class="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 title="Remove address"
               >
@@ -228,6 +228,27 @@
         </div>
       </div>
     </div>
+
+    <!-- Confirm Modal for Delete -->
+    <ConfirmModal
+      :is-open="showDeleteModal"
+      title="Remove Address"
+      message="Are you sure you want to remove this shipping address? This action cannot be undone."
+      confirm-text="Remove"
+      cancel-text="Cancel"
+      icon="heroicons:trash"
+      @confirm="deleteAddress"
+      @cancel="showDeleteModal = false"
+    />
+
+    <!-- Alert Modal -->
+    <AlertModal
+      :is-open="showAlert"
+      :type="alertType"
+      :title="alertTitle"
+      :message="alertMessage"
+      @close="showAlert = false"
+    />
   </div>
 </template>
 
@@ -238,6 +259,12 @@ let marker = null
 const showAddForm = ref(false)
 const isAdding = ref(false)
 const isGettingLocation = ref(false)
+const showDeleteModal = ref(false)
+const deleteIndex = ref(null)
+const showAlert = ref(false)
+const alertType = ref('success')
+const alertTitle = ref('')
+const alertMessage = ref('')
 
 const newAddress = ref({
   label: '',
@@ -383,6 +410,34 @@ const handleCountryChange = () => {
   newAddress.value.state = ''
 }
 
+const reverseGeocode = async (lat, lng) => {
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+    const data = await response.json()
+    
+    if (data.address) {
+      // Auto-fill form fields from geocoded data
+      if (data.address.road) {
+        newAddress.value.street = data.address.road
+      }
+      if (data.address.city || data.address.town || data.address.village) {
+        newAddress.value.localGovernment = data.address.city || data.address.town || data.address.village
+      }
+      if (data.address.state || data.address.region) {
+        newAddress.value.state = data.address.state || data.address.region
+      }
+      if (data.address.country) {
+        newAddress.value.country = data.address.country
+      }
+      if (data.address.postcode) {
+        newAddress.value.postalCode = data.address.postcode
+      }
+    }
+  } catch (error) {
+    console.error('Error reverse geocoding:', error)
+  }
+}
+
 const getCurrentLocation = () => {
   if (!navigator.geolocation) {
     alert('Geolocation is not supported by your browser')
@@ -509,10 +564,17 @@ const handleAddAddress = async () => {
     
     showAddForm.value = false
     
-    alert('Address added successfully!')
+    // Show success alert
+    alertType.value = 'success'
+    alertTitle.value = 'Address Added'
+    alertMessage.value = 'Your shipping address has been successfully added.'
+    showAlert.value = true
   } catch (error) {
     console.error('Error adding address:', error)
-    alert('Error adding address. Please try again.')
+    alertType.value = 'error'
+    alertTitle.value = 'Error'
+    alertMessage.value = 'Failed to add address. Please try again.'
+    showAlert.value = true
   } finally {
     isAdding.value = false
   }
@@ -525,10 +587,23 @@ const setDefault = (index) => {
   localStorage.setItem('shippingAddresses', JSON.stringify(addresses.value))
 }
 
-const deleteAddress = (index) => {
-  if (confirm('Are you sure you want to remove this address?')) {
-    addresses.value.splice(index, 1)
+const showDeleteConfirm = (index) => {
+  deleteIndex.value = index
+  showDeleteModal.value = true
+}
+
+const deleteAddress = () => {
+  if (deleteIndex.value !== null) {
+    addresses.value.splice(deleteIndex.value, 1)
     localStorage.setItem('shippingAddresses', JSON.stringify(addresses.value))
+    showDeleteModal.value = false
+    deleteIndex.value = null
+    
+    // Show success alert
+    alertType.value = 'success'
+    alertTitle.value = 'Address Removed'
+    alertMessage.value = 'Your shipping address has been successfully removed.'
+    showAlert.value = true
   }
 }
 

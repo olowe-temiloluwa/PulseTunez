@@ -1,5 +1,28 @@
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <!-- Auth Success Loader Overlay -->
+    <Transition
+      enter-active-class="transition-opacity duration-300"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-opacity duration-300"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div
+        v-if="showAuthLoader"
+        class="fixed inset-0 bg-white dark:bg-gray-900 z-50 flex items-center justify-center"
+      >
+        <div class="text-center">
+          <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
+            <Icon name="heroicons:check" class="w-10 h-10 text-green-600 dark:text-green-400" />
+          </div>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Welcome!</h2>
+          <p class="text-gray-600 dark:text-gray-300">You're now signed in</p>
+        </div>
+      </div>
+    </Transition>
+
     <!-- Ads Carousel -->
     <section v-if="activeAds.length > 0" class="bg-white dark:bg-gray-900 overflow-hidden pt-0 sm:pt-2">
       <div class="relative w-full max-w-7xl mx-auto px-0 sm:px-4 md:px-6 lg:px-8">
@@ -371,6 +394,7 @@ const searchQuery = ref(typeof route.query.q === 'string' ? route.query.q : '')
 const position = ref(1)
 const enableTransition = ref(true)
 const autoPlayInterval = ref(null)
+const showAuthLoader = ref(false)
 
 // Keep search in sync if navigated here with a ?q= query (e.g. from the search modal)
 watch(() => route.query.q, (q) => {
@@ -383,6 +407,16 @@ onMounted(() => {
   startAutoPlay()
   wishlistStore.loadFromLocalStorage()
   recentlyViewedStore.loadFromLocalStorage()
+
+  // Show auth loader if coming from successful login/register
+  if (route.query.auth === 'success') {
+    showAuthLoader.value = true
+    setTimeout(() => {
+      showAuthLoader.value = false
+      // Remove the query parameter without reloading
+      navigateTo(route.path, { replace: true })
+    }, 2000)
+  }
 })
 
 onUnmounted(() => {

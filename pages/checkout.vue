@@ -253,7 +253,7 @@
                 <label class="form-label">Card Number</label>
                 <div class="relative">
                   <input
-                    :value="cardDetails.cardNumber"
+                    v-model="cardDetails.cardNumber"
                     @input="onCardNumberInput"
                     type="text"
                     placeholder="1234 5678 9012 3456"
@@ -456,7 +456,8 @@ const cardTypeBadgeClass = computed(() => {
     visa: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
     mastercard: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
     amex: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300',
-    discover: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+    discover: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300',
+    verve: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
   }
   return classes[cardType.value] || 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
 })
@@ -467,7 +468,7 @@ const paymentValid = computed(() => {
 })
 
 const onCardNumberInput = (event) => {
-  cardDetails.value.cardNumber = formatCardNumber(event.target.value)
+  cardDetails.value.cardNumber = formatCardNumber(cardDetails.value.cardNumber)
 }
 
 const shippingCost = computed(() => {

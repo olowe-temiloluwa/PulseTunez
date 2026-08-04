@@ -12,7 +12,7 @@ export const isValidPostalCode = (value) => POSTAL_CODE_REGEX.test((value || '')
 export const isNonEmpty = (value) => !!(value || '').toString().trim()
 export const isValidPassword = (value) => (value || '').length >= 6
 
-// Card type detection based on IIN/BIN prefixes (Visa, Mastercard, Amex, Discover)
+// Card type detection based on IIN/BIN prefixes (Visa, Mastercard, Amex, Discover, Verve)
 export function detectCardType(cardNumber) {
   const digits = (cardNumber || '').replace(/\D/g, '')
 
@@ -20,6 +20,8 @@ export function detectCardType(cardNumber) {
   if (/^5[1-5]/.test(digits) || /^2(2[2-9]|[3-6]\d|7[01]|720)/.test(digits)) return 'mastercard'
   if (/^3[47]/.test(digits)) return 'amex'
   if (/^6(?:011|5)/.test(digits)) return 'discover'
+  // Verve card detection (Nigerian debit cards)
+  if (/^(506099|5061[78]|506[2-9]\d|507\d{3}|508\d{3}|509\d{3}|6[3-5]\d{4})/.test(digits)) return 'verve'
   return null
 }
 
@@ -50,8 +52,9 @@ export function isValidExpiryDate(value) {
   if (month < 1 || month > 12) return false
 
   const now = new Date()
-  const expiry = new Date(year, month) // first day of the month AFTER expiry month
-  return expiry > now
+  // Set expiry to the last day of the expiry month at 23:59:59
+  const expiry = new Date(year, month, 0, 23, 59, 59)
+  return expiry >= now
 }
 
 export function isValidCVV(value, cardType) {

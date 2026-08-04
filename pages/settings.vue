@@ -3,7 +3,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Header -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Settings</h1>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ userFirstName || 'Settings' }}</h1>
         <p class="text-lg text-gray-600 dark:text-gray-300">Customize your experience and preferences</p>
       </div>
 
@@ -290,7 +290,7 @@
             </NuxtLink>
 
             <button 
-              @click="handleLogout"
+              @click="showLogoutConfirm = true"
               class="w-full text-left px-4 py-3 rounded-lg border border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
             >
               <div class="flex items-center justify-between">
@@ -305,6 +305,18 @@
         </div>
       </div>
     </div>
+
+    <!-- Confirm Modal -->
+    <ConfirmModal
+      :is-open="showLogoutConfirm"
+      title="Sign Out"
+      message="Are you sure you want to sign out? You will need to log in again to access your account."
+      confirm-text="Sign Out"
+      cancel-text="Cancel"
+      icon="heroicons:arrow-right-on-rectangle"
+      @confirm="handleLogout"
+      @cancel="showLogoutConfirm = false"
+    />
   </div>
 </template>
 
@@ -318,8 +330,18 @@ const fontSize = ref('medium')
 const animationsEnabled = ref(true)
 const emailNotifications = ref(true)
 const stockAlerts = ref(true)
+const showLogoutConfirm = ref(false)
+
+// Extract first name from user's full name
+const userFirstName = computed(() => {
+  if (authStore.user?.name) {
+    return authStore.user.name.split(' ')[0]
+  }
+  return null
+})
 
 const handleLogout = () => {
+  showLogoutConfirm.value = false
   authStore.logout()
   navigateTo('/')
 }
